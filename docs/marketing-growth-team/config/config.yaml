@@ -1,0 +1,79 @@
+team:
+  name: marketing-growth-team
+  version: 1
+  principle: skill_mcp_first
+  memory_namespace: marketing_growth
+
+approval_policy:
+  require_human_approval_for:
+    - publishing_public_content
+    - sending_customer_messages
+    - changing_ad_spend
+    - changing_crm_automation
+    - modifying_production_website
+    - exporting_personal_data
+
+orchestrator:
+  path: agents/orchestrator
+  default_review_mode: evidence_first
+  routing:
+    market-research:
+      - audience
+      - competitor
+      - positioning
+      - pricing
+    content-strategy:
+      - editorial
+      - messaging
+      - copy
+      - campaign_narrative
+    growth-ops:
+      - acquisition
+      - landing_page
+      - launch
+      - funnel
+    lifecycle-crm:
+      - onboarding
+      - retention
+      - email
+      - lifecycle
+    analytics-experimentation:
+      - experiment
+      - attribution
+      - dashboard
+      - measurement
+
+agents:
+  - id: market-research
+    path: agents/market-research
+  - id: content-strategy
+    path: agents/content-strategy
+  - id: growth-ops
+    path: agents/growth-ops
+  - id: lifecycle-crm
+    path: agents/lifecycle-crm
+  - id: analytics-experimentation
+    path: agents/analytics-experimentation
+
+mcp_servers:
+  search:
+    required: false
+    purpose: web, news, competitor, and source research
+  analytics:
+    required: false
+    purpose: GA4, PostHog, Mixpanel, warehouse, or BI access
+  crm:
+    required: false
+    purpose: HubSpot, Salesforce, Customer.io, Klaviyo, or Mailchimp access
+  docs:
+    required: false
+    purpose: Notion, Google Drive, Confluence, or internal docs
+  project_management:
+    required: false
+    purpose: Linear, GitHub Issues, Jira, or task tracking
+
+default_outputs:
+  require_sources: true
+  include_assumptions: true
+  include_next_actions: true
+  include_owner_and_due_date: true

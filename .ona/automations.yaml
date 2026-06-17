@@ -1,0 +1,63 @@
+services:
+  dashboard:
+    name: Dashboard
+    description: Runs the Hermes browser dashboard.
+    triggeredBy:
+      - manual
+      - postEnvironmentStart
+    commands:
+      start: |
+        set -euo pipefail
+        gitpod environment port open 9119 --dont-wait --admission creator_only --name dashboard --protocol http || true
+        if [ ! -x .venv/bin/hermes ]; then
+          echo "Hermes is not installed in .venv yet. Run the Install dependencies task first." >&2
+          exit 1
+        fi
+        export PATH="$PWD/.venv/bin:$HOME/.local/bin:$PATH"
+        exec hermes dashboard --host 0.0.0.0 --port 9119 --no-open --insecure
+      ready: curl -sf http://localhost:9119/ >/dev/null
+    readinessTimeout: 600s
+
+tasks:
+  install-dependencies:
+    name: Install dependencies
+    description: Creates the Python virtual environment and installs Python and Node dependencies.
+    triggeredBy:
+      - manual
+      - postDevcontainerStart
+      - prebuild
+    prebuildRequiresSuccess: true
+    command: |
+      set -euo pipefail
+      if ! command -v uv >/dev/null 2>&1; then
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+      fi
+      export PATH="$HOME/.local/bin:$PATH"
+      export UV_LINK_MODE=copy
+      if [ ! -d .venv ]; then
+        uv venv .venv --python 3.13
+      fi
+      VIRTUAL_ENV="$PWD/.venv" uv pip install -e ".[all,dev]"
+      npm install
+      mkdir -p "$HOME/.hermes/cron" "$HOME/.hermes/sessions" "$HOME/.hermes/logs" "$HOME/.hermes/memories" "$HOME/.hermes/skills"
+
+  build:
+    name: Build
+    description: Builds the TUI and dashboard frontend bundles.
+    triggeredBy:
+      - manual
+    dependsOn:
+      - install-dependencies
+    command: |
+      set -euo pipefail
+      npm run build --workspace ui-tui
+      npm run build --workspace web
+
+  test:
+    name: Run tests
+    description: Runs the canonical Python test suite.
+    triggeredBy:
+      - manual
+    dependsOn:
+      - install-dependencies
+    command: scripts/run_tests.sh

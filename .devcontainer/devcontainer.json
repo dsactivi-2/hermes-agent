@@ -1,0 +1,22 @@
+{
+  "name": "Hermes Agent",
+  "image": "mcr.microsoft.com/devcontainers/base:2.0.4-noble",
+  "features": {
+    "ghcr.io/devcontainers/features/python": {
+      "version": "3.13"
+    },
+    "ghcr.io/devcontainers/features/node": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/git-lfs": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker": {
+      "moby": false,
+      "installDockerBuildx": false
+    }
+  },
+  "forwardPorts": [
+    9119
+  ]
+}
