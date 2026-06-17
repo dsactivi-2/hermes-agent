@@ -1,0 +1,162 @@
+# Hermes Marketing & Growth Team profile.
+# Copy to ~/.hermes/config.yaml or merge into an existing profile-specific config.
+
+profile:
+  name: marketing-growth
+  description: "Production-oriented Marketing & Growth multi-agent workspace"
+
+agent:
+  max_turns: 90
+  save_trajectories: true
+  checkpoints: true
+  default_task_style: "delegate-specialists-and-create-skills"
+
+display:
+  interface: tui
+  skin: default
+  tool_progress_command: true
+
+model:
+  provider: nous
+  model: "default"
+  fallback:
+    enabled: true
+    providers:
+      - provider: openrouter
+        model: "anthropic/claude-sonnet-4.6"
+      - provider: openai-api
+        model: "gpt-5.1"
+
+skills:
+  preload:
+    - hermes-agent
+    - creative/design-md
+    - creative/popular-web-designs
+    - creative/excalidraw
+    - autonomous-ai-agents/codex
+  curator:
+    enabled: true
+    review_after_complex_tasks: true
+  marketing_growth:
+    root: "docs/marketing-growth-team"
+    policy: "Prefer existing skill, then create or improve a skill, then use MCP, then direct tools."
+
+memory:
+  enabled: true
+  provider: honcho
+  namespaces:
+    brand: "marketing-growth/brand"
+    campaigns: "marketing-growth/campaigns"
+    skills: "marketing-growth/skills"
+    analytics: "marketing-growth/analytics"
+
+plugins:
+  enabled:
+    - image_gen/fal
+    - image_gen/openai
+    - browser/browser_use
+    - browser/firecrawl
+    - web/exa
+    - web/tavily
+    - memory/honcho
+    - observability/langfuse
+  recommended_optional:
+    - memory/mem0
+    - memory/supermemory
+    - platforms/discord
+    - platforms/teams
+
+mcp_servers:
+  marketing_fs:
+    command: "npx"
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem"
+      - "./docs/marketing-growth-team"
+    tools:
+      include:
+        - read_file
+        - write_file
+        - list_directory
+        - create_directory
+  browser:
+    command: "npx"
+    args:
+      - "-y"
+      - "chrome-devtools-mcp@latest"
+      - "--autoConnect"
+      - "--no-usage-statistics"
+    tools:
+      exclude:
+        - close_page
+  notion:
+    command: "npx"
+    args:
+      - "-y"
+      - "@notionhq/notion-mcp-server"
+    env:
+      NOTION_TOKEN: "${NOTION_TOKEN}"
+    tools:
+      include:
+        - search
+        - fetch
+        - create_page
+        - update_page
+  github:
+    command: "npx"
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-github"
+    env:
+      GITHUB_PERSONAL_ACCESS_TOKEN: "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+    tools:
+      include:
+        - search_code
+        - get_file_contents
+        - create_branch
+        - create_pull_request
+  social_posting:
+    command: "uvx"
+    args:
+      - "company-social-mcp"
+    env:
+      LINKEDIN_ACCESS_TOKEN: "${LINKEDIN_ACCESS_TOKEN}"
+      BUFFER_ACCESS_TOKEN: "${BUFFER_ACCESS_TOKEN}"
+    tools:
+      include:
+        - list_accounts
+        - create_draft
+        - schedule_post
+        - get_post_metrics
+  analytics:
+    command: "uvx"
+    args:
+      - "company-marketing-analytics-mcp"
+    env:
+      GA4_PROPERTY_ID: "${GA4_PROPERTY_ID}"
+      GOOGLE_SEARCH_CONSOLE_SITE_URL: "${GOOGLE_SEARCH_CONSOLE_SITE_URL}"
+    tools:
+      include:
+        - ga4_report
+        - search_console_query
+        - ads_report
+        - campaign_dashboard_snapshot
+
+gateway:
+  enabled: false
+  platforms:
+    slack:
+      enabled: false
+    discord:
+      enabled: false
+
+dashboard:
+  enabled: true
+  default_profile: marketing-growth
+  expose_plugins_page: true
+  expose_mcp_page: true
+
+hooks:
+  post_task_review:
+    enabled: true
+    description: "After complex marketing tasks, ask whether a reusable skill should be created or updated."
