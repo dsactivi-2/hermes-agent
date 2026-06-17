@@ -34,7 +34,9 @@ tasks:
       fi
       export PATH="$HOME/.local/bin:$PATH"
       export UV_LINK_MODE=copy
-      uv venv .venv --python 3.13
+      if [ ! -d .venv ]; then
+        uv venv .venv --python 3.13
+      fi
       VIRTUAL_ENV="$PWD/.venv" uv pip install -e ".[all,dev]"
       npm install
       mkdir -p "$HOME/.hermes/cron" "$HOME/.hermes/sessions" "$HOME/.hermes/logs" "$HOME/.hermes/memories" "$HOME/.hermes/skills"
