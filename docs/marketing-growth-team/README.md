@@ -51,6 +51,7 @@ bash docs/marketing-growth-team/deploy/server-preflight.sh
 bash docs/marketing-growth-team/deploy/create-default-isolated-profiles.sh
 bash docs/marketing-growth-team/deploy/install-server-aliases.sh
 bash docs/marketing-growth-team/deploy/set-profile-models.sh --provider openrouter --model x-ai/grok-4.3 --restart-gateway
+bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh
 bash docs/marketing-growth-team/deploy/tunnel-alias-template.sh <server-host> root 22
 ```
 

@@ -111,7 +111,25 @@ bash docs/marketing-growth-team/deploy/set-profile-models.sh \
 
 The script does not write API keys. It only updates `model.provider` and `model.model` in each profile config.
 
-## 5. Termius Port Forwarding Values
+## 5. Add Deep Research Agent
+
+Run this on the server to add the Deep Research agent to all default isolated profiles:
+
+```bash
+bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh
+```
+
+By default it updates `arnela`, `denis`, `arman`, and `testing`.
+
+To update selected profiles:
+
+```bash
+bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh arnela testing
+```
+
+The script copies `agents/deep-research/` into each profile workspace and updates the profile's orchestrator `SUBAGENTS.md`, `WORKFLOWS.md`, and `SKILLS.md` with idempotent marked blocks.
+
+## 6. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -127,7 +145,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 6. Local Alias Instead Of Typing The Tunnel Command
+## 7. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 
