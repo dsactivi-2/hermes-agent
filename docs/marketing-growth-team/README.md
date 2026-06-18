@@ -12,10 +12,16 @@ docs/marketing-growth-team/
 │   ├── social-media-specialist/
 │   ├── seo-web/
 │   ├── creative-design/
-│   └── campaign-analyst/
+│   ├── campaign-analyst/
+│   └── deep-research/
 ├── config/
 │   ├── config.yaml
 │   └── .env.example
+├── memory/
+│   ├── shared/
+│   ├── orchestrator/
+│   ├── agents/
+│   └── protocols/
 ├── workflows/
 │   └── step2job-linkedin-campaign.md
 └── setup.sh
@@ -52,10 +58,28 @@ bash docs/marketing-growth-team/deploy/create-default-isolated-profiles.sh
 bash docs/marketing-growth-team/deploy/install-server-aliases.sh
 bash docs/marketing-growth-team/deploy/set-profile-models.sh --provider openrouter --model x-ai/grok-4.3 --restart-gateway
 bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh
+bash docs/marketing-growth-team/deploy/install-memory-system.sh
 bash docs/marketing-growth-team/deploy/tunnel-alias-template.sh <server-host> root 22
 ```
 
 `server-preflight.sh` läuft auf dem Server und verändert nichts. `tunnel-alias-template.sh` ist für deinen lokalen Rechner gedacht, weil ein SSH-Local-Tunnel auf dem Gerät geöffnet werden muss, auf dem auch der Browser läuft.
+
+## Curated Memory System
+
+Das Team nutzt ein kuratiertes Memory-System statt ungefilterter Rohdatenablage:
+
+- `memory/shared/`: Brand, Audiences, Offers, Compliance, Campaigns und Sources fuer alle Agents.
+- `memory/orchestrator/`: Entscheidungen, Team-Learnings, Review Queue und Skill Backlog.
+- `memory/agents/`: rollenspezifische Learnings pro Agent.
+- `memory/protocols/`: Regeln fuer Memory-Qualitaet, Self-Learning und Review.
+
+Installiere es in isolierte Profile mit:
+
+```bash
+bash docs/marketing-growth-team/deploy/install-memory-system.sh
+```
+
+Agents schreiben stabile rollenspezifische Learnings in ihr Agent-Memory. Teamweite oder unsichere Learnings gehen zuerst in `memory/orchestrator/REVIEW_QUEUE.md`; der Orchestrator entscheidet, was in Shared Memory oder den Skill Backlog uebernommen wird.
 
 ## Start
 

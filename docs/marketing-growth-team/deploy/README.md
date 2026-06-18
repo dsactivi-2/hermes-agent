@@ -129,7 +129,37 @@ bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh arnela testing
 
 The script copies `agents/deep-research/` into each profile workspace and updates the profile's orchestrator `SUBAGENTS.md`, `WORKFLOWS.md`, and `SKILLS.md` with idempotent marked blocks.
 
-## 6. Termius Port Forwarding Values
+## 6. Install Curated Memory System
+
+Run this on the server after the profile workspaces exist:
+
+```bash
+bash docs/marketing-growth-team/deploy/install-memory-system.sh
+```
+
+By default it updates `arnela`, `denis`, `arman`, and `testing`.
+
+To update selected profiles:
+
+```bash
+bash docs/marketing-growth-team/deploy/install-memory-system.sh arnela testing
+```
+
+The script:
+
+- creates `memory/shared`, `memory/orchestrator`, `memory/agents`, and `memory/protocols`
+- copies only missing memory files, so existing profile memory is not overwritten
+- adds idempotent memory instructions to the Orchestrator and specialist agent `MEMORY.md` files
+- defines a self-learning loop where agents propose durable learnings and the Orchestrator curates shared memory and Skill candidates
+
+Verify:
+
+```bash
+find ~/.hermes/profile-workspaces/arnela/memory -maxdepth 2 -type f | sort
+grep -n "Curated Memory System" ~/.hermes/profile-workspaces/arnela/agents/orchestrator/MEMORY.md
+```
+
+## 7. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -145,7 +175,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 7. Local Alias Instead Of Typing The Tunnel Command
+## 8. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 
