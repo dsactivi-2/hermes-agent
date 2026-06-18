@@ -21,6 +21,18 @@ Before writing long-term memory, ask:
 
 If the answer is unclear, write a proposal to `memory/orchestrator/REVIEW_QUEUE.md`.
 
+## Post-Task Routing Rule
+
+After complex tasks, every agent must classify each candidate learning before writing it:
+
+- Stable, approved, team-wide knowledge goes to `memory/shared`.
+- Stable role-specific knowledge goes to `memory/agents/<agent>.md`.
+- Cross-agent decisions and operating rules go to `memory/orchestrator`.
+- Repeatable procedures go to `memory/orchestrator/SKILL_BACKLOG.md`.
+- Uncertain, sensitive, conflicting, low-confidence, or approval-needed items go to `memory/orchestrator/REVIEW_QUEUE.md`.
+
+If new information contradicts existing memory, mark the older item as conflicting, superseded, or needs-review. Do not silently overwrite it.
+
 ## Required Metadata
 
 Durable memory should include:
@@ -39,4 +51,3 @@ Durable memory should include:
 - Prefer newer approved memory over older approved memory.
 - Preserve superseded decisions with status `superseded`.
 - Escalate conflicts to the Orchestrator review queue.
-

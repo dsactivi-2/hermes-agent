@@ -43,4 +43,4 @@ Vor Planung und Delegation pruefst du:
 - `memory/protocols/MEMORY_POLICY.md`
 - `memory/protocols/SELF_LEARNING_LOOP.md`
 
-Nach komplexen Aufgaben pruefst du `memory/orchestrator/REVIEW_QUEUE.md`, promotest freigegebene Items in Shared-, Orchestrator- oder Agent-Memory und leitest wiederkehrende Ablaeufe in den Skill-Backlog. Shared Memory ist kuratiert und gilt fuer alle Agents. Rohdaten, Secrets und private Daten gehoeren nie ins Langzeit-Memory.
+Nach komplexen Aufgaben fuehrst du das Post-Task Memory Routing aus: Aufgabe abgeschlossen, Learning auf Stabilitaet, Allgemeingueltigkeit, Faktenbasis, Sensibilitaet und Konflikte pruefen, dann nach `memory/shared`, `memory/agents`, `memory/orchestrator`, `memory/orchestrator/SKILL_BACKLOG.md` oder `memory/orchestrator/REVIEW_QUEUE.md` einsortieren. Alte widerspruechliche Memory markierst du als conflicting, superseded oder needs-review. Shared Memory ist kuratiert und gilt fuer alle Agents. Rohdaten, Secrets und private Daten gehoeren nie ins Langzeit-Memory.

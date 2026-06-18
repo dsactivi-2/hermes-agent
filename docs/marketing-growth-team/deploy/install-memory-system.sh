@@ -177,11 +177,16 @@ Vor komplexen Aufgaben pruefst du:
 
 Nach komplexen oder wiederkehrenden Aufgaben:
 
-1. Speichere nur stabile, wiederverwendbare Learnings.
-2. Schreibe rollenspezifische Learnings in \`$role_memory\`.
-3. Schlage teamweite Learnings in \`memory/orchestrator/REVIEW_QUEUE.md\` vor.
-4. Wenn ein Ablauf wiederholt nutzbar ist, schlage eine Hermes Skill in \`memory/orchestrator/SKILL_BACKLOG.md\` vor.
-5. Speichere keine Secrets, privaten Daten, Rohtranskripte oder ungeprueften Claims."
+1. Aufgabe abschliessen.
+2. Learning auf Stabilitaet, Allgemeingueltigkeit, Faktenbasis, Sensibilitaet und Konflikte pruefen.
+3. Stabile teamweite Learnings nach \`memory/shared\` einsortieren.
+4. Rollenspezifische Learnings in \`$role_memory\` schreiben.
+5. Cross-Agent-Entscheidungen oder Operating Rules nach \`memory/orchestrator\` schreiben.
+6. Wiederholbare Ablaeufe in \`memory/orchestrator/SKILL_BACKLOG.md\` vorschlagen.
+7. Unsichere, sensible, widerspruechliche oder freigabepflichtige Items in \`memory/orchestrator/REVIEW_QUEUE.md\` vorschlagen.
+8. Alte widerspruechliche Memory markieren statt still zu ueberschreiben.
+
+Speichere keine Secrets, privaten Daten, Rohtranskripte oder ungeprueften Claims."
 }
 
 update_orchestrator_memory_instructions() {
@@ -217,11 +222,14 @@ Vor Planung und Delegation pruefst du:
 
 Nach komplexen Aufgaben:
 
-1. Pruefe \`memory/orchestrator/REVIEW_QUEUE.md\`.
-2. Promoviere freigegebene Items in \`memory/shared\`, \`memory/orchestrator\` oder \`memory/agents\`.
-3. Markiere abgelehnte, unsichere oder widerspruechliche Items sichtbar.
-4. Leite wiederkehrende Ablaeufe in den Skill-Backlog.
-5. Erstelle oder verbessere Hermes Skills, wenn ein Ablauf stabil und wiederverwendbar ist.
+1. Aufgabe abschliessen.
+2. Learning auf Stabilitaet, Allgemeingueltigkeit, Faktenbasis, Sensibilitaet und Konflikte pruefen.
+3. Freigegebene teamweite Learnings nach \`memory/shared\` promoten.
+4. Rollenspezifische Learnings nach \`memory/agents\` einsortieren.
+5. Cross-Agent-Entscheidungen und Operating Rules nach \`memory/orchestrator\` schreiben.
+6. Wiederholbare Ablaeufe in \`memory/orchestrator/SKILL_BACKLOG.md\` aufnehmen.
+7. Unsichere, sensible, widerspruechliche oder freigabepflichtige Items in \`memory/orchestrator/REVIEW_QUEUE.md\` belassen.
+8. Alte widerspruechliche Memory markieren statt still zu ueberschreiben.
 
 Regel: Shared Memory ist kuratiert und gilt fuer alle Agents. Agent Memory bleibt rollenspezifisch. Rohdaten, Secrets und private Daten gehoeren nie ins Langzeit-Memory."
 }

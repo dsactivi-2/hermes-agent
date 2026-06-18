@@ -244,6 +244,18 @@ for agent in "${expected_agents[@]}"; do
       contains "$memory_file" 'Curated Memory System|memory/shared|REVIEW_QUEUE|SKILL_BACKLOG' \
         && pass "$agent MEMORY.md is bound to curated memory system" \
         || warn "$agent MEMORY.md is not yet bound to curated memory system; run install-memory-system.sh for deployed profiles"
+
+      contains "$memory_file" 'Post-Task Memory Routing|Stabilitaet|Allgemeingueltigkeit|Faktenbasis|Sensibilitaet|Konflikte' \
+        && pass "$agent MEMORY.md includes post-task memory routing checks" \
+        || fail "$agent MEMORY.md missing post-task memory routing checks"
+
+      contains "$memory_file" 'memory/shared' \
+        && contains "$memory_file" 'memory/agents|memory/agents/' \
+        && contains "$memory_file" 'memory/orchestrator' \
+        && contains "$memory_file" 'SKILL_BACKLOG' \
+        && contains "$memory_file" 'REVIEW_QUEUE' \
+        && pass "$agent MEMORY.md routes learnings to all required memory destinations" \
+        || fail "$agent MEMORY.md missing one or more memory routing destinations"
     fi
   fi
 done
@@ -296,6 +308,18 @@ if [ -d "$ROOT/memory" ]; then
   for file in "${memory_files[@]}"; do
     [ -f "$ROOT/$file" ] && pass "$file exists" || fail "$file missing"
   done
+
+  if [ -f "$ROOT/memory/protocols/SELF_LEARNING_LOOP.md" ]; then
+    contains "$ROOT/memory/protocols/SELF_LEARNING_LOOP.md" 'Post-Task Memory Routing' \
+      && pass "SELF_LEARNING_LOOP.md defines Post-Task Memory Routing" \
+      || fail "SELF_LEARNING_LOOP.md missing Post-Task Memory Routing"
+  fi
+
+  if [ -f "$ROOT/memory/protocols/MEMORY_POLICY.md" ]; then
+    contains "$ROOT/memory/protocols/MEMORY_POLICY.md" 'Post-Task Routing Rule' \
+      && pass "MEMORY_POLICY.md defines Post-Task Routing Rule" \
+      || fail "MEMORY_POLICY.md missing Post-Task Routing Rule"
+  fi
 else
   warn "memory directory missing; install-memory-system.sh has not been applied to this root"
 fi
@@ -329,4 +353,3 @@ if [ "$FAILS" -gt 0 ] && [ "$WARN_ONLY" = false ]; then
 fi
 
 exit 0
-

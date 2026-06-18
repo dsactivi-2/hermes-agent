@@ -181,6 +181,7 @@ The audit checks:
 - warnings when `SKILLS.md` or `TOOLS.md` are identical across agents
 - warnings for broad "all tools" or "all skills" language
 - curated memory-system bindings and shared memory template files
+- post-task memory routing: stability, generality, evidence, sensitivity, conflicts, and routing to shared memory, agent memory, orchestrator memory, skill backlog, or review queue
 
 Use the report as the input for the next optimization pass instead of letting an automation blindly rewrite prompts.
 

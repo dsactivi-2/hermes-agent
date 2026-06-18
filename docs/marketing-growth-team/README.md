@@ -92,6 +92,7 @@ bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile arnela --re
 ```
 
 Das Audit warnt, wenn Agents zu breit konfiguriert wirken, Pflichtdateien fehlen, Skill-/MCP-first-Regeln fehlen oder mehrere Agents identische `SKILLS.md`/`TOOLS.md` Dateien haben.
+Es prueft auch, ob jeder Agent nach komplexen Aufgaben den Post-Task-Memory-Routing-Ablauf nutzt: Stabilitaet, Allgemeingueltigkeit, Faktenbasis, Sensibilitaet, Konflikte und Einsortierung in Shared Memory, Agent Memory, Orchestrator Memory, Skill Backlog oder Review Queue.
 
 ## Start
 
