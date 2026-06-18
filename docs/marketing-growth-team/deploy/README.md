@@ -29,6 +29,28 @@ It prints:
 
 It does not change server state.
 
+## 1b. Remote Gateway Preflight
+
+Run this on the server when Hermes Desktop or another remote client cannot reach a profile gateway:
+
+```bash
+cd ~/hermes-agent
+bash docs/marketing-growth-team/deploy/remote-gateway-preflight.sh --profile arman --public-host 46.225.222.164
+```
+
+It prints:
+
+- profile `.env` and `config.yaml` paths
+- API server host/port/CORS values
+- masked API key fingerprint, never the full key
+- Docker and Hermes gateway status
+- listener status for the API port
+- local `/health` and `/v1/models` checks
+- public `/health` check from the server to the public IP/domain
+- `ufw` status and network reminders
+
+If local checks pass but the public check fails, the issue is usually `ufw`, provider firewall, wrong public IP/domain, or a closed TCP port.
+
 ## 2. Create Isolated Profiles
 
 Run this on the server to create the default isolated workspaces:
