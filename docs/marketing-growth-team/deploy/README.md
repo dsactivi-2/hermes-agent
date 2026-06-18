@@ -51,6 +51,33 @@ It prints:
 
 If local checks pass but the public check fails, the issue is usually `ufw`, provider firewall, wrong public IP/domain, or a closed TCP port.
 
+## 1c. Stack Status Read-Only
+
+Run this on the server when you are unsure which phases have already been applied:
+
+```bash
+cd ~/hermes-agent
+bash docs/marketing-growth-team/deploy/stack-status-readonly.sh --public-host 46.225.222.164
+```
+
+For a deeper read-only check, include profile audits:
+
+```bash
+bash docs/marketing-growth-team/deploy/stack-status-readonly.sh --public-host 46.225.222.164 --audit
+```
+
+It reports:
+
+- git branch/head and docs dirty state
+- Docker containers
+- profile, workspace, agent and memory completeness
+- dashboard/API local and public health
+- gateway state per profile
+- model summary per profile
+- missing install phases and recommended next commands
+
+It does not change files, containers, profiles, gateways, firewall, or configs.
+
 ## 2. Create Isolated Profiles
 
 Run this on the server to create the default isolated workspaces:
