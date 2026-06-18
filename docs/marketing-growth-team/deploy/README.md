@@ -159,7 +159,25 @@ find ~/.hermes/profile-workspaces/arnela/memory -maxdepth 2 -type f | sort
 grep -n "Curated Memory System" ~/.hermes/profile-workspaces/arnela/agents/orchestrator/MEMORY.md
 ```
 
-## 7. Audit Agent Docs, Skills And Tools
+## 7. Add Memory Review / Reflektor Agent
+
+Run this on the server to add the Memory Review / Reflektor agent to all default isolated profiles:
+
+```bash
+bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh
+```
+
+By default it updates `arnela`, `denis`, `arman`, and `testing`.
+
+To update selected profiles:
+
+```bash
+bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh arnela testing
+```
+
+The script copies `agents/memory-review-reflector/` into each profile workspace, ensures the Reflektor memory and Skill Builder protocol exist, and updates the profile's orchestrator `SUBAGENTS.md`, `WORKFLOWS.md`, and `SKILLS.md` with idempotent marked blocks.
+
+## 8. Audit Agent Docs, Skills And Tools
 
 Run this on the server or in the repo to audit the blueprint:
 
@@ -185,7 +203,7 @@ The audit checks:
 
 Use the report as the input for the next optimization pass instead of letting an automation blindly rewrite prompts.
 
-## 8. Termius Port Forwarding Values
+## 9. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -201,7 +219,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 9. Local Alias Instead Of Typing The Tunnel Command
+## 10. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 

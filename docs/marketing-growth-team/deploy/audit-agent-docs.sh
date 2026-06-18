@@ -110,6 +110,7 @@ expected_agents=(
   creative-design
   campaign-analyst
   deep-research
+  memory-review-reflector
 )
 
 declare -A expected_mcp
@@ -120,6 +121,7 @@ expected_mcp[seo-web]="browser analytics github marketing_fs notion"
 expected_mcp[creative-design]="marketing_fs notion browser"
 expected_mcp[campaign-analyst]="analytics social_posting notion marketing_fs"
 expected_mcp[deep-research]="marketing_fs browser notion analytics"
+expected_mcp[memory-review-reflector]="marketing_fs notion analytics github"
 
 declare -A expected_skill_terms
 expected_skill_terms[orchestrator]="campaign delegation brand postmortem"
@@ -129,6 +131,7 @@ expected_skill_terms[seo-web]="seo landing tracking serp"
 expected_skill_terms[creative-design]="creative image carousel presentation"
 expected_skill_terms[campaign-analyst]="kpi utm dashboard experiment"
 expected_skill_terms[deep-research]="research source competitor persona trend evidence"
+expected_skill_terms[memory-review-reflector]="memory review skill backlog conflict"
 
 emit "# Marketing & Growth Agent Audit"
 emit ""
@@ -304,6 +307,7 @@ if [ -d "$ROOT/memory" ]; then
     memory/protocols/MEMORY_POLICY.md
     memory/protocols/SELF_LEARNING_LOOP.md
     memory/protocols/MEMORY_REVIEW_CHECKLIST.md
+    memory/protocols/SKILL_BUILDER_WORKFLOW.md
   )
   for file in "${memory_files[@]}"; do
     [ -f "$ROOT/$file" ] && pass "$file exists" || fail "$file missing"
@@ -319,6 +323,12 @@ if [ -d "$ROOT/memory" ]; then
     contains "$ROOT/memory/protocols/MEMORY_POLICY.md" 'Post-Task Routing Rule' \
       && pass "MEMORY_POLICY.md defines Post-Task Routing Rule" \
       || fail "MEMORY_POLICY.md missing Post-Task Routing Rule"
+  fi
+
+  if [ -f "$ROOT/memory/protocols/SKILL_BUILDER_WORKFLOW.md" ]; then
+    contains "$ROOT/memory/protocols/SKILL_BUILDER_WORKFLOW.md" 'Skill Builder Workflow' \
+      && pass "SKILL_BUILDER_WORKFLOW.md defines Skill Builder Workflow" \
+      || fail "SKILL_BUILDER_WORKFLOW.md missing Skill Builder Workflow"
   fi
 else
   warn "memory directory missing; install-memory-system.sh has not been applied to this root"

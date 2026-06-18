@@ -13,7 +13,8 @@ docs/marketing-growth-team/
 │   ├── seo-web/
 │   ├── creative-design/
 │   ├── campaign-analyst/
-│   └── deep-research/
+│   ├── deep-research/
+│   └── memory-review-reflector/
 ├── config/
 │   ├── config.yaml
 │   └── .env.example
@@ -58,6 +59,7 @@ bash docs/marketing-growth-team/deploy/create-default-isolated-profiles.sh
 bash docs/marketing-growth-team/deploy/install-server-aliases.sh
 bash docs/marketing-growth-team/deploy/set-profile-models.sh --provider openrouter --model x-ai/grok-4.3 --restart-gateway
 bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh
+bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh
 bash docs/marketing-growth-team/deploy/install-memory-system.sh
 bash docs/marketing-growth-team/deploy/audit-agent-docs.sh
 bash docs/marketing-growth-team/deploy/tunnel-alias-template.sh <server-host> root 22
@@ -93,6 +95,16 @@ bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile arnela --re
 
 Das Audit warnt, wenn Agents zu breit konfiguriert wirken, Pflichtdateien fehlen, Skill-/MCP-first-Regeln fehlen oder mehrere Agents identische `SKILLS.md`/`TOOLS.md` Dateien haben.
 Es prueft auch, ob jeder Agent nach komplexen Aufgaben den Post-Task-Memory-Routing-Ablauf nutzt: Stabilitaet, Allgemeingueltigkeit, Faktenbasis, Sensibilitaet, Konflikte und Einsortierung in Shared Memory, Agent Memory, Orchestrator Memory, Skill Backlog oder Review Queue.
+
+## Memory Review / Reflektor und Skill Builder
+
+Der Memory Review / Reflektor Agent prueft regelmaessig `REVIEW_QUEUE.md`, `TEAM_LEARNINGS.md` und `SKILL_BACKLOG.md`. Er markiert widerspruechliche Memory, bereitet Promote-/Reject-/Needs-Source-Entscheidungen vor und erstellt Skill Builder Briefs fuer wiederholte Muster.
+
+```bash
+bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh
+```
+
+Der Skill Builder bleibt bewusst ein Workflow und Skill-Kandidat, kein neues Hermes-Core-Tool. Wiederholte Muster werden zuerst als Brief in `memory/protocols/SKILL_BUILDER_WORKFLOW.md` strukturiert und danach als Hermes Skill entworfen.
 
 ## Start
 

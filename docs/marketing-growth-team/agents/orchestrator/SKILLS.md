@@ -15,6 +15,8 @@
 - `marketing-growth/delegation-router`: mappt Marketing-Aufgaben auf Specialist-Agents und Definition of Done.
 - `marketing-growth/brand-memory-bootstrap`: extrahiert Brand Voice, Claims, No-Gos und Proof Points aus Quellen.
 - `marketing-growth/campaign-postmortem`: macht aus Ergebnissen, Fehlern und Learnings Skill-Updates.
+- `marketing-growth/memory-review-triage`: Review Queue, Team Learnings und Skill Backlog kuratieren.
+- `marketing-growth/skill-builder-brief`: wiederholte Muster in Skill-Entwuerfe mit Trigger, Schritten und Tests uebersetzen.
 
 ## Erstellungskriterien
 
@@ -25,4 +27,3 @@ Erstelle oder verbessere eine Skill, wenn mindestens eines zutrifft:
 - Ein Tool- oder MCP-Ablauf hat mehr als drei Schritte.
 - Brand-, Compliance- oder Freigaberegeln müssen zuverlässig wiederholt werden.
 - Die Qualität hängt stark von einem wiederverwendbaren Prompt- oder Bewertungsmuster ab.
-

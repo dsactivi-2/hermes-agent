@@ -25,8 +25,11 @@ Jede Delegation enthält:
 - SEO & Web: Suchintention, Landingpage, Tracking, technische Checks.
 - Creative / Design: Visuals, Präsentationen, Bildgenerierung, Carousels.
 - Campaign Analyst: KPIs, Experimente, Dashboards, Postmortems.
+- Deep Research: Markt-, Wettbewerbs-, Persona-, Trend-, Quellen- und Evidence-Research.
+- Memory Review / Reflektor: Review Queue, Team Learnings, Skill Backlog, Memory-Konflikte und Skill-Builder-Briefs.
 
 ## Rückführung
 
 Subagents liefern kompakte Ergebnisse plus Annahmen, Risiken und Skill-Kandidaten. Der Orchestrator entscheidet, was integriert wird, was zurück zur Überarbeitung geht und welche Skills erstellt oder verbessert werden.
 
+Setze Memory Review / Reflektor woechentlich oder nach komplexen Kampagnen ein, um `REVIEW_QUEUE.md`, `TEAM_LEARNINGS.md` und `SKILL_BACKLOG.md` zu kuratieren. Setze ihn auch ein, wenn wiederholte Muster zu einem Skill Builder Brief werden sollen.

@@ -22,4 +22,5 @@ Create or improve a Hermes Skill when:
 - Prefer Skills before new tools.
 - Prefer MCP servers when an external system needs structured integration.
 - Do not request Hermes core tools for profile-specific marketing workflows.
-
+- Send repeated high-value patterns to the Memory Review / Reflektor Agent for a Skill Builder Brief.
+- Track accepted Skill Builder Briefs with status `approved`, `drafted`, `tested`, `shipped`, or `improve`.

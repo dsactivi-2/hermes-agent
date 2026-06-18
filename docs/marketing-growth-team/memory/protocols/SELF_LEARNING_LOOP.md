@@ -9,6 +9,7 @@ Purpose: make the team improve proactively without polluting memory.
 3. After complex work: decide whether the learning belongs in agent memory, shared memory, or the review queue.
 4. After repeated work: propose a Hermes Skill or improve an existing Skill.
 5. After campaign close: write a short post-task learning with evidence and review date.
+6. If a Skill candidate is repeated or high-value, ask the Memory Review / Reflektor Agent to create a Skill Builder Brief.
 
 ## Post-Task Memory Routing
 
@@ -43,6 +44,7 @@ Create or improve a Skill when:
 ## Proactive Review Cadence
 
 - Weekly: Orchestrator reviews `REVIEW_QUEUE.md`.
+- Weekly: Memory Review / Reflektor reviews `REVIEW_QUEUE.md`, `TEAM_LEARNINGS.md`, and `SKILL_BACKLOG.md`.
 - Weekly: Campaign Analyst reviews campaign learnings for measurable signal.
 - Monthly: Deep Research reviews source quality and stale trend assumptions.
 - Monthly: Orchestrator updates `SKILL_BACKLOG.md` and assigns skill candidates.

@@ -80,9 +80,11 @@ required_files=(
   agents/creative-design.md
   agents/campaign-analyst.md
   agents/deep-research.md
+  agents/memory-review-reflector.md
   protocols/MEMORY_POLICY.md
   protocols/SELF_LEARNING_LOOP.md
   protocols/MEMORY_REVIEW_CHECKLIST.md
+  protocols/SKILL_BUILDER_WORKFLOW.md
 )
 
 for file in "${required_files[@]}"; do
@@ -135,6 +137,7 @@ agent_memory_file_for() {
     creative-design) printf '%s\n' "memory/agents/creative-design.md" ;;
     campaign-analyst) printf '%s\n' "memory/agents/campaign-analyst.md" ;;
     deep-research) printf '%s\n' "memory/agents/deep-research.md" ;;
+    memory-review-reflector) printf '%s\n' "memory/agents/memory-review-reflector.md" ;;
     *) printf '%s\n' "" ;;
   esac
 }
@@ -174,6 +177,7 @@ Vor komplexen Aufgaben pruefst du:
 - \`$role_memory\`
 - \`memory/protocols/MEMORY_POLICY.md\`
 - \`memory/protocols/SELF_LEARNING_LOOP.md\`
+- \`memory/protocols/SKILL_BUILDER_WORKFLOW.md\`
 
 Nach komplexen oder wiederkehrenden Aufgaben:
 
@@ -261,7 +265,8 @@ for profile in "${PROFILES[@]}"; do
     seo-web \
     creative-design \
     campaign-analyst \
-    deep-research
+    deep-research \
+    memory-review-reflector
   do
     update_agent_memory_instructions "$workspace" "$agent"
   done

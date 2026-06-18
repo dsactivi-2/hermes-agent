@@ -7,6 +7,7 @@ Purpose: define how the Marketing & Growth team writes, reviews, and uses memory
 - `memory/shared`: approved team-wide facts used by all agents.
 - `memory/orchestrator`: decisions, cross-agent learnings, review queue, and skill backlog.
 - `memory/agents`: role-specific durable learnings.
+- `memory/protocols/SKILL_BUILDER_WORKFLOW.md`: rules for turning repeated patterns into Skill drafts.
 - Hermes runtime memory: short operational memory created by Hermes during active work.
 
 ## Write Policy

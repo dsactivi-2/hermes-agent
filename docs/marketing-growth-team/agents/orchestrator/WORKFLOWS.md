@@ -18,7 +18,14 @@
 4. Skill neu erstellen oder Änderungsnotiz für bestehende Skill formulieren.
 5. Skill im Memory als Kandidat oder aktiv markieren.
 
+## Memory Review und Skill Builder
+
+1. Memory Review / Reflektor mit Scope beauftragen: Profil, Kampagne, Zeitraum oder gesamtes Team.
+2. Reflektor prueft `REVIEW_QUEUE.md`, `TEAM_LEARNINGS.md`, `SKILL_BACKLOG.md`, Agent-Memory und relevante Shared-Memory-Dateien.
+3. Reflektor liefert Promote-/Reject-/Needs-Source-/Conflict-Entscheidungen und Skill-Builder-Briefs.
+4. Orchestrator entscheidet, welche Memory-Aenderungen promoted und welche Skills erstellt oder verbessert werden.
+5. Wiederholbare Skill-Builder-Briefs werden als Hermes Skill-Entwurf umgesetzt und nach Nutzung reviewed.
+
 ## Beispiel: Step2Job LinkedIn
 
 Der Orchestrator erstellt zuerst ein Kampagnenbriefing, delegiert Post-Serie, Kalender, Landingpage-Check, Visual-Konzept und KPI-Plan, führt die Ergebnisse zusammen und erstellt anschließend Skills für LinkedIn-Briefing, Step2Job Brand Voice und Carousel-Produktion.
-
