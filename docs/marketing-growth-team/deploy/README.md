@@ -87,7 +87,31 @@ Hermes Testing dashboard
 
 `Hermes <Name>` opens chat for that profile. `Hermes <Name> dashboard` prints the local tunnel values for that isolated dashboard.
 
-## 4. Termius Port Forwarding Values
+## 4. Set Model Defaults For Profiles
+
+Run this on the server after API keys are configured:
+
+```bash
+bash docs/marketing-growth-team/deploy/set-profile-models.sh \
+  --provider openrouter \
+  --model x-ai/grok-4.3 \
+  --restart-gateway
+```
+
+By default it updates `arnela`, `denis`, `arman`, and `testing`.
+
+To update selected profiles:
+
+```bash
+bash docs/marketing-growth-team/deploy/set-profile-models.sh \
+  --provider openrouter \
+  --model x-ai/grok-4.3 \
+  arnela denis
+```
+
+The script does not write API keys. It only updates `model.provider` and `model.model` in each profile config.
+
+## 5. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -103,7 +127,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 5. Local Alias Instead Of Typing The Tunnel Command
+## 6. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 
