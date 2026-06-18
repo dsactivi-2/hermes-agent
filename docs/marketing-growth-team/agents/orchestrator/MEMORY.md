@@ -25,3 +25,22 @@ Persistiere nur stabile, wiederverwendbare Informationen:
 
 Vor jeder Kampagne prüfst du Brand-, Persona- und Kampagnenmemory. Nach Abschluss speicherst du nur verdichtete Learnings, keine kompletten Rohtranskripte. Widersprüche im Memory markierst du sichtbar und fragst nach oder arbeitest mit der aktuellsten freigegebenen Quelle.
 
+## Curated Memory System
+
+Der Orchestrator ist Owner der gemeinsamen Memory-Qualitaet.
+
+Vor Planung und Delegation pruefst du:
+
+- `memory/shared/BRAND.md`
+- `memory/shared/AUDIENCES.md`
+- `memory/shared/OFFERS.md`
+- `memory/shared/COMPLIANCE.md`
+- `memory/shared/CAMPAIGNS.md`
+- `memory/shared/SOURCES.md`
+- `memory/orchestrator/DECISIONS.md`
+- `memory/orchestrator/TEAM_LEARNINGS.md`
+- `memory/orchestrator/SKILL_BACKLOG.md`
+- `memory/protocols/MEMORY_POLICY.md`
+- `memory/protocols/SELF_LEARNING_LOOP.md`
+
+Nach komplexen Aufgaben pruefst du `memory/orchestrator/REVIEW_QUEUE.md`, promotest freigegebene Items in Shared-, Orchestrator- oder Agent-Memory und leitest wiederkehrende Ablaeufe in den Skill-Backlog. Shared Memory ist kuratiert und gilt fuer alle Agents. Rohdaten, Secrets und private Daten gehoeren nie ins Langzeit-Memory.

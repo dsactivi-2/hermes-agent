@@ -116,7 +116,7 @@ append_block_once() {
 
   mkdir -p "$(dirname "$file")"
   touch "$file"
-  if grep -Fq "$begin" "$file"; then
+  if grep -Fq "$begin" "$file" || grep -Fq "## Curated Memory System" "$file"; then
     return 0
   fi
 
@@ -270,4 +270,3 @@ Verify one profile:
   find ~/.hermes/profile-workspaces/arnela/memory -maxdepth 2 -type f | sort
   grep -n "Curated Memory System" ~/.hermes/profile-workspaces/arnela/agents/orchestrator/MEMORY.md
 EOF
-

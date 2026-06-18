@@ -11,10 +11,10 @@
 - `marketing-growth/kpi-tree`: Ziel, Leading Indicators, Lagging Indicators und Guardrails.
 - `marketing-growth/utm-validator`: UTM-Regeln prüfen und Fehler markieren.
 - `marketing-growth/weekly-campaign-report`: wiederverwendbares Reporting-Format.
+- `marketing-growth/dashboard-brief`: Dashboard-Struktur, Metriken, Segmente und Entscheidungsfragen definieren.
 - `marketing-growth/experiment-design`: Hypothese, Varianten, Zielmetrik, Laufzeit, Stop-Regeln.
 - `marketing-growth/campaign-postmortem-analytics`: Learnings und nächste Experimente ableiten.
 
 ## Erstellungskriterien
 
 Erstelle eine Skill, wenn ein Analyse-Template mehrfach gebraucht wird, Datenquellen wiederholt gleich kombiniert werden, ein Reporting-Rhythmus entsteht oder dieselben Messfehler wiederkehren.
-

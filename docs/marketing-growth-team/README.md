@@ -59,6 +59,7 @@ bash docs/marketing-growth-team/deploy/install-server-aliases.sh
 bash docs/marketing-growth-team/deploy/set-profile-models.sh --provider openrouter --model x-ai/grok-4.3 --restart-gateway
 bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh
 bash docs/marketing-growth-team/deploy/install-memory-system.sh
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh
 bash docs/marketing-growth-team/deploy/tunnel-alias-template.sh <server-host> root 22
 ```
 
@@ -80,6 +81,17 @@ bash docs/marketing-growth-team/deploy/install-memory-system.sh
 ```
 
 Agents schreiben stabile rollenspezifische Learnings in ihr Agent-Memory. Teamweite oder unsichere Learnings gehen zuerst in `memory/orchestrator/REVIEW_QUEUE.md`; der Orchestrator entscheidet, was in Shared Memory oder den Skill Backlog uebernommen wird.
+
+## Agent Audit
+
+Pruefe regelmaessig, ob alle Agenten passende Prompts, Skills, Tools, Memory-Regeln und rollenbasierte MCP-Zuordnung haben:
+
+```bash
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile arnela --report /tmp/arnela-agent-audit.md
+```
+
+Das Audit warnt, wenn Agents zu breit konfiguriert wirken, Pflichtdateien fehlen, Skill-/MCP-first-Regeln fehlen oder mehrere Agents identische `SKILLS.md`/`TOOLS.md` Dateien haben.
 
 ## Start
 

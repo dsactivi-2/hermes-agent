@@ -159,7 +159,32 @@ find ~/.hermes/profile-workspaces/arnela/memory -maxdepth 2 -type f | sort
 grep -n "Curated Memory System" ~/.hermes/profile-workspaces/arnela/agents/orchestrator/MEMORY.md
 ```
 
-## 7. Termius Port Forwarding Values
+## 7. Audit Agent Docs, Skills And Tools
+
+Run this on the server or in the repo to audit the blueprint:
+
+```bash
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh
+```
+
+Audit a deployed profile workspace:
+
+```bash
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile arnela --report /tmp/arnela-agent-audit.md
+```
+
+The audit checks:
+
+- required agent files: `ROLE.md`, `SYSTEM.md`, `SKILLS.md`, `TOOLS.md`, `MEMORY.md`, `WORKFLOWS.md`, `SUBAGENTS.md`
+- explicit Skill-first, MCP-second, direct-tools-last rules in `SYSTEM.md`
+- role-specific Skill and MCP coverage
+- warnings when `SKILLS.md` or `TOOLS.md` are identical across agents
+- warnings for broad "all tools" or "all skills" language
+- curated memory-system bindings and shared memory template files
+
+Use the report as the input for the next optimization pass instead of letting an automation blindly rewrite prompts.
+
+## 8. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -175,7 +200,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 8. Local Alias Instead Of Typing The Tunnel Command
+## 9. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 
