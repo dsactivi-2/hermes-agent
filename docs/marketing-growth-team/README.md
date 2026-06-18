@@ -42,6 +42,19 @@ cp config/config.yaml ~/.hermes/config.yaml
 
 Danach API Keys in `~/.hermes/.env` ergänzen und die gewünschte Provider-/Plugin-Auswahl mit `hermes setup`, `hermes plugins`, `hermes mcp` und `hermes skills` prüfen.
 
+## Server Deployment
+
+Hilfsscripts für VPS/Docker-Deployments liegen unter `deploy/`:
+
+```bash
+bash docs/marketing-growth-team/deploy/server-preflight.sh
+bash docs/marketing-growth-team/deploy/create-default-isolated-profiles.sh
+bash docs/marketing-growth-team/deploy/install-server-aliases.sh
+bash docs/marketing-growth-team/deploy/tunnel-alias-template.sh <server-host> root 22
+```
+
+`server-preflight.sh` läuft auf dem Server und verändert nichts. `tunnel-alias-template.sh` ist für deinen lokalen Rechner gedacht, weil ein SSH-Local-Tunnel auf dem Gerät geöffnet werden muss, auf dem auch der Browser läuft.
+
 ## Start
 
 Orchestrator im CLI starten:
