@@ -15,7 +15,7 @@ Read-only by default. Checks whether each Marketing & Growth dashboard
 container can see all Hermes profiles or only its own profile.
 
 With --apply, recreates each dashboard container with narrow mounts:
-- profile directory mounted as /opt/data
+- profile directory mounted as /opt/data/profiles/<profile>
 - matching profile workspace mounted under /opt/data/profile-workspaces/<profile>
 
 This prevents a dashboard opened through one profile hostname from using the
@@ -183,9 +183,9 @@ recreate_dashboard() {
     --name "$container" \
     --restart unless-stopped \
     --network host \
-    -v "${profile_dir}:/opt/data" \
+    -v "${profile_dir}:/opt/data/profiles/${profile}" \
     -v "${workspace_dir}:/opt/data/profile-workspaces/${profile}" \
-    -e "HERMES_HOME=/opt/data" \
+    -e "HERMES_HOME=/opt/data/profiles/${profile}" \
     -e "HERMES_DASHBOARD_PUBLIC_URL=https://${profile}.${BASE_DOMAIN}" \
     -e "HERMES_UID=${HERMES_UID:-10000}" \
     -e "HERMES_GID=${HERMES_GID:-10000}" \
@@ -212,8 +212,8 @@ for profile in "${profiles[@]}"; do
   printf '\n-- %s --\n' "$profile"
   value "container" "$container"
   value "dashboard port" "${port:-unknown}"
-  value "profile dir" "$profile_dir"
-  value "workspace dir" "$workspace_dir"
+  value "profile dir" "$profile_dir -> /opt/data/profiles/$profile"
+  value "workspace dir" "$workspace_dir -> /opt/data/profile-workspaces/$profile"
   value "public url" "https://${profile}.${BASE_DOMAIN}"
   value "local http before" "$(http_code "http://127.0.0.1:${port}/")"
   value "profiles visible before" "$(profile_count_from_dashboard "$port")"
@@ -238,7 +238,7 @@ cat <<'EOF'
 
 Expected hardened result:
 - Mounts no longer show the whole Hermes data root mounted to /opt/data.
-- Each dashboard sees only its own profile data mounted as /opt/data.
+- Each dashboard sees only its own profile mounted under /opt/data/profiles.
 - /api/profiles should not list sibling profiles.
 
 Cloudflare Access still controls who can reach each hostname. This script
