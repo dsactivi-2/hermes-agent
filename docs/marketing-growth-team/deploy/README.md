@@ -283,7 +283,86 @@ The audit checks:
 
 Use the report as the input for the next optimization pass instead of letting an automation blindly rewrite prompts.
 
-## 10. Termius Port Forwarding Values
+## 10. Cloudflare Access For Browser Dashboards
+
+Recommended mode:
+
+```text
+Browser -> Cloudflare Access -> Cloudflare Tunnel -> 127.0.0.1:9120-9123
+```
+
+This keeps the Hermes dashboard ports local-only on the server and exposes
+HTTPS hostnames through Cloudflare Access login.
+
+Run the read-only planner first:
+
+```bash
+cd ~/hermes-agent
+bash docs/marketing-growth-team/deploy/cloudflare-access-tunnel.sh --domain example.com
+```
+
+Replace `example.com` with the domain that is in your Cloudflare account.
+The planned hostnames are:
+
+| Profile | Public hostname | Local origin |
+|---|---|---|
+| arnela | `https://arnela.example.com` | `http://127.0.0.1:9120` |
+| denis | `https://denis.example.com` | `http://127.0.0.1:9121` |
+| arman | `https://arman.example.com` | `http://127.0.0.1:9122` |
+| testing | `https://testing.example.com` | `http://127.0.0.1:9123` |
+
+Install and authenticate `cloudflared` on the server:
+
+```bash
+cloudflared tunnel login
+cloudflared tunnel create hermes-marketing-growth
+cloudflared tunnel list
+```
+
+Then write the tunnel config with the tunnel UUID:
+
+```bash
+sudo bash docs/marketing-growth-team/deploy/cloudflare-access-tunnel.sh \
+  --domain example.com \
+  --tunnel-name hermes-marketing-growth \
+  --tunnel-id TUNNEL_UUID \
+  --credentials-file /root/.cloudflared/TUNNEL_UUID.json \
+  --write-config
+```
+
+Create Cloudflare DNS routes:
+
+```bash
+sudo bash docs/marketing-growth-team/deploy/cloudflare-access-tunnel.sh \
+  --domain example.com \
+  --tunnel-name hermes-marketing-growth \
+  --route-dns
+```
+
+Install/start the tunnel service:
+
+```bash
+sudo bash docs/marketing-growth-team/deploy/cloudflare-access-tunnel.sh \
+  --domain example.com \
+  --install-service
+```
+
+In Cloudflare Zero Trust, create Access applications:
+
+- Type: Self-hosted.
+- Hostnames: `arnela.example.com`, `denis.example.com`, `arman.example.com`, `testing.example.com`.
+- Policy action: Allow.
+- Include: allowed emails, email domain, Google group, GitHub org, or another team rule.
+- Require 2FA at the identity provider if possible.
+
+Do not put `API_SERVER_KEY` into Cloudflare Access. That key belongs to the
+Hermes API profile `.env`. Cloudflare Access protects the dashboard login path.
+
+Hermes Desktop may not complete the Cloudflare Access browser login flow. If
+Desktop cannot connect through Access, keep the SSH tunnel for Desktop and use
+Cloudflare Access for browser dashboards.
+
+## 11. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -299,7 +378,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 11. Local Alias Instead Of Typing The Tunnel Command
+## 12. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 
