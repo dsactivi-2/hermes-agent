@@ -174,6 +174,27 @@ logs_contain_recent() {
   docker logs "$container" --tail 200 2>/dev/null | grep -Eiq "$pattern"
 }
 
+gateway_status_for_profile() {
+  local profile="$1"
+  local output
+  if ! command_exists docker || ! docker inspect hermes >/dev/null 2>&1; then
+    printf 'unknown'
+    return
+  fi
+  output="$(docker exec hermes hermes -p "$profile" gateway status 2>/dev/null || true)"
+  if [ -z "$output" ]; then
+    printf 'unknown'
+    return
+  fi
+  if printf '%s\n' "$output" | grep -Eiq 'Gateway:[[:space:]]+running|Gateway is running|✓ Gateway is running'; then
+    printf 'running'
+  elif printf '%s\n' "$output" | grep -Eiq 'Gateway:[[:space:]]+stopped|Gateway is stopped|not running|stopped'; then
+    printf 'stopped'
+  else
+    printf 'unknown'
+  fi
+}
+
 mask_secret() {
   local value="$1"
   if [ -z "$value" ]; then
@@ -225,8 +246,7 @@ fi
 
 section "Cloudflared"
 if command_exists systemctl; then
-  if systemctl is-system-running >/dev/null 2>&1 \
-    && systemctl is-active --quiet cloudflared 2>/dev/null; then
+  if systemctl is-active --quiet cloudflared 2>/dev/null; then
     pass "cloudflared service" "active"
   else
     warn "cloudflared service" "not active"
@@ -271,11 +291,7 @@ for profile in "${PROFILES[@]}"; do
   api_code="$(http_code "http://127.0.0.1:${api_port}/health")"
   visible="$(visible_profiles "$dash_port")"
   public_url="$(container_env_value "$container" HERMES_DASHBOARD_PUBLIC_URL)"
-  gateway_state="unknown"
-  if command_exists docker && docker inspect hermes >/dev/null 2>&1; then
-    gateway_state="$(docker exec hermes hermes -p "$profile" gateway status 2>/dev/null | awk '/Gateway:/ {print $2; exit}' || true)"
-    [ -n "$gateway_state" ] || gateway_state="unknown"
-  fi
+  gateway_state="$(gateway_status_for_profile "$profile")"
   printf '%-8s %-9s %-10s %-13s %-12s %-14s %-22s\n' \
     "$profile" "local:$dash_code" "local:$api_code" "$visible" \
     "${public_url:+set}" "$gateway_state" "https://$(hostname_for_profile "$profile")"
