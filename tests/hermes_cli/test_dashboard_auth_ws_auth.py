@@ -443,6 +443,31 @@ class TestWsHostOriginGuardOrigins:
         ws = self._ws(origin="http://evil.test", host="127.0.0.1:8080")
         assert web_server._ws_host_origin_is_allowed(ws) is False
 
+    def test_loopback_public_url_origin_allowed(self, loopback_app, monkeypatch):
+        """A reverse proxy may rewrite Host to loopback while the browser
+        Origin remains the public dashboard URL.
+        """
+        monkeypatch.setenv(
+            "HERMES_DASHBOARD_PUBLIC_URL", "https://denis.activi-apps.io"
+        )
+        ws = self._ws(
+            origin="https://denis.activi-apps.io",
+            host="127.0.0.1:8080",
+        )
+        assert web_server._ws_host_origin_is_allowed(ws) is True
+
+    def test_loopback_public_url_does_not_allow_sibling_origin(
+        self, loopback_app, monkeypatch
+    ):
+        monkeypatch.setenv(
+            "HERMES_DASHBOARD_PUBLIC_URL", "https://denis.activi-apps.io"
+        )
+        ws = self._ws(
+            origin="https://arman.activi-apps.io",
+            host="127.0.0.1:8080",
+        )
+        assert web_server._ws_host_origin_is_allowed(ws) is False
+
     def test_explicit_non_loopback_file_origin_allowed(self, insecure_explicit_host_app):
         """Packaged Hermes Desktop also uses file:// when connecting to a
         Tailscale/LAN dashboard bind.

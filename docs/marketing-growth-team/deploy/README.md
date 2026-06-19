@@ -112,10 +112,36 @@ bash docs/marketing-growth-team/deploy/create-isolated-profile.sh --name Sales -
 The script:
 
 - creates or updates the Hermes profile
-- copies the marketing-growth template into `/opt/data/profile-workspaces/<profile>` via the host volume
+- copies the marketing-growth template into `/opt/data/profile-workspaces/<profile>` inside the profile dashboard container
 - copies skills into the profile
 - migrates/checks config with `doctor --fix`
-- starts an isolated dashboard container named `hermes-dashboard-<profile>`
+- starts an isolated dashboard container named `hermes-dashboard-<profile>` with only that profile directory mounted as `/opt/data`
+
+## 2b. Harden Existing Dashboard Containers
+
+Run this after older isolated dashboards were already created with the full
+Hermes data root mounted:
+
+```bash
+cd ~/hermes-agent
+bash docs/marketing-growth-team/deploy/harden-dashboard-containers.sh
+```
+
+The default mode is read-only. It shows:
+
+- current dashboard mounts
+- local dashboard health
+- which profiles the dashboard API can see
+
+If any profile dashboard can see sibling profiles, recreate the dashboard
+containers with narrow per-profile mounts:
+
+```bash
+bash docs/marketing-growth-team/deploy/harden-dashboard-containers.sh --apply
+```
+
+Cloudflare Access controls who can reach a hostname. Narrow dashboard mounts
+control what that hostname's dashboard can see after login.
 
 ## 3. Install Server Command Helper
 

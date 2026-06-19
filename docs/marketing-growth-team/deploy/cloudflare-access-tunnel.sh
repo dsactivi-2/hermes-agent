@@ -168,6 +168,7 @@ write_config() {
   {
     printf 'tunnel: %s\n' "$TUNNEL_ID"
     printf 'credentials-file: %s\n' "$CREDENTIALS_FILE"
+    printf 'protocol: http2\n'
     printf '\n'
     printf 'ingress:\n'
     for profile in "${profiles[@]}"; do

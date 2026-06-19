@@ -5,6 +5,7 @@ TEMPLATE_DIR="${TEMPLATE_DIR:-docs/marketing-growth-team}"
 DATA_ROOT="${HERMES_DATA_ROOT:-$HOME/.hermes}"
 IMAGE="${HERMES_IMAGE:-hermes-agent}"
 BASE_PORT="${BASE_PORT:-9120}"
+BASE_DOMAIN="${BASE_DOMAIN:-activi-apps.io}"
 START_DASHBOARD=1
 PROFILE_INPUT=""
 DESCRIPTION=""
@@ -13,7 +14,7 @@ PORT=""
 usage() {
   cat <<EOF
 Usage:
-  $0 [--name NAME] [--port PORT] [--description TEXT] [--no-dashboard]
+  $0 [--name NAME] [--port PORT] [--domain DOMAIN] [--description TEXT] [--no-dashboard]
 
 Creates an isolated Hermes profile from the marketing-growth template.
 
@@ -56,6 +57,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --port)
       PORT="${2:-}"
+      shift 2
+      ;;
+    --domain)
+      BASE_DOMAIN="${2:-}"
       shift 2
       ;;
     --description)
@@ -173,7 +178,10 @@ if [ "$START_DASHBOARD" -eq 1 ]; then
     --name "$DASH_CONTAINER" \
     --restart unless-stopped \
     --network host \
-    -v "$DATA_ROOT:/opt/data" \
+    -v "$PROFILE_DIR:/opt/data" \
+    -v "$WORKSPACE_DIR:/opt/data/profile-workspaces/$PROFILE" \
+    -e "HERMES_HOME=/opt/data" \
+    -e "HERMES_DASHBOARD_PUBLIC_URL=https://${PROFILE}.${BASE_DOMAIN}" \
     -e "HERMES_UID=${HERMES_UID:-10000}" \
     -e "HERMES_GID=${HERMES_GID:-10000}" \
     "$IMAGE" \
@@ -203,4 +211,3 @@ Termius Local Forwarding:
   Destination host:  127.0.0.1
   Destination port:  ${PORT:-9119}
 EOF
-

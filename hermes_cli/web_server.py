@@ -10351,9 +10351,37 @@ def _ws_host_origin_reason(ws: "WebSocket") -> Optional[str]:
     if not parsed.netloc:
         return f"origin_mismatch origin={origin} bound={bound_host}"
 
-    if not _is_accepted_host(parsed.netloc, bound_host):
+    if not _is_accepted_host(parsed.netloc, bound_host) and not _origin_matches_public_url(origin):
         return f"origin_mismatch origin={origin} bound={bound_host}"
     return None
+
+
+def _origin_matches_public_url(origin: str) -> bool:
+    """True when a WS Origin matches the configured dashboard public URL.
+
+    Reverse proxies such as Cloudflare Tunnel often connect to a loopback-bound
+    dashboard with ``Host: 127.0.0.1`` while browsers correctly send
+    ``Origin: https://dashboard.example.com``.  ``HERMES_DASHBOARD_PUBLIC_URL``
+    is the operator's explicit allowlist for that public origin.
+    """
+    public_url = (os.environ.get("HERMES_DASHBOARD_PUBLIC_URL") or "").strip()
+    if not public_url:
+        return False
+
+    try:
+        parsed_origin = urllib.parse.urlparse(origin)
+        parsed_public = urllib.parse.urlparse(public_url)
+    except Exception:
+        return False
+
+    if parsed_origin.scheme not in {"http", "https"}:
+        return False
+    if parsed_public.scheme not in {"http", "https"}:
+        return False
+    return (
+        parsed_origin.scheme.lower() == parsed_public.scheme.lower()
+        and parsed_origin.netloc.lower() == parsed_public.netloc.lower()
+    )
 
 
 def _ws_host_origin_is_allowed(ws: "WebSocket") -> bool:
