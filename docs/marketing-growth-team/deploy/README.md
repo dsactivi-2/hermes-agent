@@ -70,6 +70,7 @@ It reports:
 
 - git branch/head and docs dirty state
 - Docker containers
+- blueprint template completeness in `docs/marketing-growth-team`
 - profile, workspace, agent and memory completeness
 - dashboard/API local and public health
 - gateway state per profile
@@ -251,12 +252,23 @@ Run this on the server or in the repo to audit the blueprint:
 
 ```bash
 bash docs/marketing-growth-team/deploy/audit-agent-docs.sh
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --report /tmp/marketing-growth-template-audit.md
 ```
 
 Audit a deployed profile workspace:
 
 ```bash
 bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile arnela --report /tmp/arnela-agent-audit.md
+```
+
+Audit the blueprint and all default deployed profile workspaces:
+
+```bash
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --report /tmp/marketing-growth-template-audit.md
+for p in arnela denis arman testing; do
+  bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile "$p" --report "/tmp/$p-agent-audit.md"
+done
+grep -n "WARN:\|FAIL:" /tmp/marketing-growth-template-audit.md /tmp/*-agent-audit.md
 ```
 
 The audit checks:

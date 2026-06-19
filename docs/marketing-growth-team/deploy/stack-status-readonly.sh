@@ -2,13 +2,14 @@
 set -u
 
 DATA_ROOT="${HERMES_DATA_ROOT:-$HOME/.hermes}"
+TEMPLATE_ROOT="${TEMPLATE_ROOT:-docs/marketing-growth-team}"
 PUBLIC_HOST=""
 RUN_AUDIT=false
 
 usage() {
   cat <<EOF
 Usage:
-  $0 [--public-host HOST_OR_IP] [--audit]
+  $0 [--public-host HOST_OR_IP] [--template-root PATH] [--audit]
 
 Read-only status report for the Marketing & Growth Hermes stack.
 It does not change files, containers, profiles, gateways, firewall, or configs.
@@ -16,6 +17,7 @@ It does not change files, containers, profiles, gateways, firewall, or configs.
 Examples:
   $0
   $0 --public-host 46.225.222.164
+  $0 --template-root docs/marketing-growth-team --audit
   $0 --public-host 46.225.222.164 --audit
 EOF
 }
@@ -24,6 +26,10 @@ while [ "$#" -gt 0 ]; do
   case "$1" in
     --public-host)
       PUBLIC_HOST="${2:-}"
+      shift 2
+      ;;
+    --template-root)
+      TEMPLATE_ROOT="${2:-}"
       shift 2
       ;;
     --audit)
@@ -152,6 +158,37 @@ count_files() {
   fi
 }
 
+complete_agent_count() {
+  local root="$1"
+  local agent file all_files count=0
+  for agent in "${required_agents[@]}"; do
+    all_files=true
+    for file in "${required_agent_files[@]}"; do
+      [ -f "$root/agents/$agent/$file" ] || all_files=false
+    done
+    [ "$all_files" = true ] && count=$((count + 1))
+  done
+  printf '%s' "$count"
+}
+
+memory_file_count() {
+  local root="$1"
+  local file count=0
+  for file in "${required_memory_files[@]}"; do
+    [ -f "$root/$file" ] && count=$((count + 1))
+  done
+  printf '%s' "$count"
+}
+
+config_state_for_root() {
+  local root="$1"
+  if [ -f "$root/config/config.yaml" ]; then
+    printf 'ok'
+  else
+    printf 'missing'
+  fi
+}
+
 required_agent_files=(ROLE.md SYSTEM.md SKILLS.md TOOLS.md MEMORY.md WORKFLOWS.md SUBAGENTS.md)
 required_agents=(
   orchestrator
@@ -193,6 +230,7 @@ section "Stack Status Read-Only"
 value "date utc" "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date)"
 value "cwd" "$(pwd)"
 value "data root" "$DATA_ROOT"
+value "template root" "$TEMPLATE_ROOT"
 if [ -n "$PUBLIC_HOST" ]; then
   value "public host" "$PUBLIC_HOST"
 fi
@@ -200,6 +238,19 @@ if command_exists git && git rev-parse --is-inside-work-tree >/dev/null 2>&1; th
   value "git branch" "$(git branch --show-current 2>/dev/null || printf unknown)"
   value "git head" "$(git log -1 --oneline 2>/dev/null || printf unknown)"
   value "git dirty docs" "$(git status --short docs/marketing-growth-team 2>/dev/null | wc -l | tr -d ' ') changed/untracked"
+fi
+
+section "Blueprint Template Summary"
+printf '%-20s %-8s %-8s %-12s %-10s\n' "TEMPLATE" "ROOT" "AGENTS" "MEMORY" "CONFIG"
+if [ -d "$TEMPLATE_ROOT" ]; then
+  template_agents="$(complete_agent_count "$TEMPLATE_ROOT")/${#required_agents[@]}"
+  template_memory="$(memory_file_count "$TEMPLATE_ROOT")/${#required_memory_files[@]}"
+  template_config="$(config_state_for_root "$TEMPLATE_ROOT")"
+  printf '%-20s %-8s %-8s %-12s %-10s\n' \
+    "marketing-growth" "ok" "$template_agents" "$template_memory" "$template_config"
+else
+  printf '%-20s %-8s %-8s %-12s %-10s\n' \
+    "marketing-growth" "missing" "0/${#required_agents[@]}" "0/${#required_memory_files[@]}" "missing"
 fi
 
 section "Docker Containers"
@@ -228,20 +279,10 @@ for profile in "${profiles[@]}"; do
   workspace_state="missing"
   [ -d "$workspace" ] && workspace_state="ok"
 
-  agent_ok=0
-  for agent in "${required_agents[@]}"; do
-    all_files=true
-    for file in "${required_agent_files[@]}"; do
-      [ -f "$workspace/agents/$agent/$file" ] || all_files=false
-    done
-    [ "$all_files" = true ] && agent_ok=$((agent_ok + 1))
-  done
+  agent_ok="$(complete_agent_count "$workspace")"
   agent_state="${agent_ok}/${#required_agents[@]}"
 
-  memory_ok=0
-  for file in "${required_memory_files[@]}"; do
-    [ -f "$workspace/$file" ] && memory_ok=$((memory_ok + 1))
-  done
+  memory_ok="$(memory_file_count "$workspace")"
   memory_state="${memory_ok}/${#required_memory_files[@]}"
 
   dash_code="$(http_code "http://127.0.0.1:${dashboard_port}/")"
@@ -312,6 +353,35 @@ done
 
 section "Missing Pieces"
 missing_any=false
+if [ ! -d "$TEMPLATE_ROOT" ]; then
+  miss "template root" "$TEMPLATE_ROOT"
+  missing_any=true
+else
+  for agent in "${required_agents[@]}"; do
+    if [ ! -d "$TEMPLATE_ROOT/agents/$agent" ]; then
+      miss "template agent" "$agent"
+      missing_any=true
+      continue
+    fi
+    for file in "${required_agent_files[@]}"; do
+      if [ ! -f "$TEMPLATE_ROOT/agents/$agent/$file" ]; then
+        miss "template agent file" "agents/$agent/$file"
+        missing_any=true
+      fi
+    done
+  done
+  for file in "${required_memory_files[@]}"; do
+    if [ ! -f "$TEMPLATE_ROOT/$file" ]; then
+      miss "template memory" "$file"
+      missing_any=true
+    fi
+  done
+  if [ ! -f "$TEMPLATE_ROOT/config/config.yaml" ]; then
+    miss "template config" "config/config.yaml"
+    missing_any=true
+  fi
+fi
+
 for profile in "${profiles[@]}"; do
   workspace="$DATA_ROOT/profile-workspaces/$profile"
   profile_dir="$DATA_ROOT/profiles/$profile"
@@ -328,7 +398,14 @@ for profile in "${profiles[@]}"; do
     if [ ! -d "$workspace/agents/$agent" ]; then
       miss "$profile agent" "$agent"
       missing_any=true
+      continue
     fi
+    for file in "${required_agent_files[@]}"; do
+      if [ ! -f "$workspace/agents/$agent/$file" ]; then
+        miss "$profile agent file" "agents/$agent/$file"
+        missing_any=true
+      fi
+    done
   done
   for file in "${required_memory_files[@]}"; do
     if [ ! -f "$workspace/$file" ]; then
@@ -337,7 +414,7 @@ for profile in "${profiles[@]}"; do
     fi
   done
 done
-[ "$missing_any" = false ] && ok "stack files" "all required profiles, agents, and memory files present"
+[ "$missing_any" = false ] && ok "stack files" "template plus all required profiles, agents, and memory files present"
 
 section "Recommended Next Commands"
 cat <<'EOF'
@@ -356,17 +433,32 @@ bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh
 bash docs/marketing-growth-team/deploy/upgrade-profile-memory-routing.sh
 
 # Run strict audits:
+bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --report /tmp/marketing-growth-template-audit.md
+
 for p in arnela denis arman testing; do
   bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile "$p" --report "/tmp/$p-agent-audit.md"
 done
 
 # Show audit warnings/failures:
-grep -n "WARN:\|FAIL:" /tmp/*-agent-audit.md
+grep -n "WARN:\|FAIL:" /tmp/marketing-growth-template-audit.md /tmp/*-agent-audit.md
 EOF
 
 section "Optional Audit"
 if [ "$RUN_AUDIT" = true ]; then
   if [ -x docs/marketing-growth-team/deploy/audit-agent-docs.sh ]; then
+    template_report="/tmp/marketing-growth-template-audit.md"
+    printf '\n-- audit blueprint template --\n'
+    if [ -d "$TEMPLATE_ROOT" ]; then
+      if bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --root "$TEMPLATE_ROOT" --report "$template_report" >/tmp/stack-status-audit.$$ 2>&1; then
+        tail -n 8 /tmp/stack-status-audit.$$
+      else
+        cat /tmp/stack-status-audit.$$
+      fi
+      rm -f /tmp/stack-status-audit.$$
+    else
+      warn "template audit" "template root missing: $TEMPLATE_ROOT"
+    fi
+
     for profile in "${profiles[@]}"; do
       report="/tmp/${profile}-agent-audit.md"
       printf '\n-- audit %s --\n' "$profile"
@@ -381,5 +473,5 @@ if [ "$RUN_AUDIT" = true ]; then
     warn "audit" "audit-agent-docs.sh not executable/found"
   fi
 else
-  value "audit" "skipped; pass --audit to run profile audits"
+  value "audit" "skipped; pass --audit to run template and profile audits"
 fi
