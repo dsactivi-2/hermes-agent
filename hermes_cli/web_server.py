@@ -8901,6 +8901,55 @@ def _profile_to_dict(info) -> Dict[str, Any]:
     }
 
 
+def _single_profile_dashboard_name() -> str:
+    """Return the forced dashboard profile name, if configured.
+
+    Isolated reverse-proxy dashboards are scoped to one profile and should not
+    expose the machine-level profile switcher.  The env var is intentionally
+    deployment-only: normal local dashboards keep the full profile manager.
+    """
+    return (os.environ.get("HERMES_DASHBOARD_SINGLE_PROFILE") or "").strip()
+
+
+def _single_profile_dashboard_info(profiles_mod):
+    name = _single_profile_dashboard_name()
+    if not name:
+        return None
+    canon = profiles_mod.normalize_profile_name(name)
+    path = Path(get_hermes_home())
+    try:
+        model, provider = profiles_mod._read_config_model(path)
+    except Exception:
+        model, provider = None, None
+    try:
+        meta = profiles_mod.read_profile_meta(path)
+    except Exception:
+        meta = {"description": "", "description_auto": False}
+    gateway_pid = get_running_pid()
+    gateway_running = gateway_pid is not None
+    if not gateway_running:
+        try:
+            local_runtime = read_runtime_status()
+            gateway_running = (
+                local_runtime is not None
+                and get_runtime_status_running_pid(local_runtime) is not None
+            )
+        except Exception:
+            gateway_running = profiles_mod._check_gateway_running(path)
+    return profiles_mod.ProfileInfo(
+        name=canon,
+        path=path,
+        is_default=False,
+        gateway_running=gateway_running,
+        model=model,
+        provider=provider,
+        has_env=(path / ".env").exists(),
+        skill_count=profiles_mod._count_skills(path),
+        description=meta.get("description", ""),
+        description_auto=meta.get("description_auto", False),
+    )
+
+
 def _fallback_profile_dicts(profiles_mod) -> List[Dict[str, Any]]:
     def _safe(callable_, default):
         try:
@@ -9090,6 +9139,9 @@ def _disable_unselected_skills(profile_dir: Path, keep: List[str]) -> int:
 @app.get("/api/profiles")
 async def list_profiles_endpoint():
     from hermes_cli import profiles as profiles_mod
+    single = _single_profile_dashboard_info(profiles_mod)
+    if single is not None:
+        return {"profiles": [_profile_to_dict(single)]}
     try:
         return {"profiles": [_profile_to_dict(p) for p in profiles_mod.list_profiles()]}
     except Exception:
@@ -9220,6 +9272,10 @@ async def get_active_profile_endpoint():
     the running dashboard/gateway is scoped to (derived from HERMES_HOME).
     """
     from hermes_cli import profiles as profiles_mod
+    single = _single_profile_dashboard_name()
+    if single:
+        canon = profiles_mod.normalize_profile_name(single)
+        return {"active": canon, "current": canon}
     try:
         active = profiles_mod.get_active_profile() or "default"
     except Exception:
@@ -9239,6 +9295,16 @@ async def set_active_profile_endpoint(body: ProfileActiveUpdate):
     it changes which profile subsequent CLI commands and gateways use.
     """
     from hermes_cli import profiles as profiles_mod
+    single = _single_profile_dashboard_name()
+    if single:
+        canon = profiles_mod.normalize_profile_name(single)
+        requested = profiles_mod.normalize_profile_name(body.name)
+        if requested != canon:
+            raise HTTPException(
+                status_code=403,
+                detail="This dashboard is locked to a single profile.",
+            )
+        return {"ok": True, "active": canon}
     try:
         profiles_mod.set_active_profile(body.name)
     except FileNotFoundError as e:

@@ -181,6 +181,7 @@ if [ "$START_DASHBOARD" -eq 1 ]; then
     -v "$PROFILE_DIR:/opt/data/profiles/$PROFILE" \
     -v "$WORKSPACE_DIR:/opt/data/profile-workspaces/$PROFILE" \
     -e "HERMES_HOME=/opt/data/profiles/$PROFILE" \
+    -e "HERMES_DASHBOARD_SINGLE_PROFILE=$PROFILE" \
     -e "HERMES_DASHBOARD_PUBLIC_URL=https://${PROFILE}.${BASE_DOMAIN}" \
     -e "HERMES_UID=${HERMES_UID:-10000}" \
     -e "HERMES_GID=${HERMES_GID:-10000}" \

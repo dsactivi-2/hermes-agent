@@ -186,6 +186,7 @@ recreate_dashboard() {
     -v "${profile_dir}:/opt/data/profiles/${profile}" \
     -v "${workspace_dir}:/opt/data/profile-workspaces/${profile}" \
     -e "HERMES_HOME=/opt/data/profiles/${profile}" \
+    -e "HERMES_DASHBOARD_SINGLE_PROFILE=${profile}" \
     -e "HERMES_DASHBOARD_PUBLIC_URL=https://${profile}.${BASE_DOMAIN}" \
     -e "HERMES_UID=${HERMES_UID:-10000}" \
     -e "HERMES_GID=${HERMES_GID:-10000}" \

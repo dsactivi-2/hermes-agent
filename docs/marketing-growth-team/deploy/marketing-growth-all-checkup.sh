@@ -291,6 +291,7 @@ for profile in "${PROFILES[@]}"; do
   api_code="$(http_code "http://127.0.0.1:${api_port}/health")"
   visible="$(visible_profiles "$dash_port")"
   public_url="$(container_env_value "$container" HERMES_DASHBOARD_PUBLIC_URL)"
+  single_profile="$(container_env_value "$container" HERMES_DASHBOARD_SINGLE_PROFILE)"
   gateway_state="$(gateway_status_for_profile "$profile")"
   printf '%-8s %-9s %-10s %-13s %-12s %-14s %-22s\n' \
     "$profile" "local:$dash_code" "local:$api_code" "$visible" \
@@ -312,12 +313,17 @@ for profile in "${PROFILES[@]}"; do
   else
     warn "$profile public origin env" "expected=$expected_public actual=${public_url:-missing}"
   fi
-  if [ "$visible" = "$profile" ] || [ "$visible" = "default,$profile" ] || [ "$visible" = "$profile,default" ]; then
+  if [ "$visible" = "$profile" ]; then
     pass "$profile visible profiles" "$visible"
   elif [ "$visible" = "unknown" ] || [ "$visible" = "parse-failed" ]; then
     warn "$profile visible profiles" "$visible"
   else
     fail "$profile visible profiles" "sibling exposure? $visible"
+  fi
+  if [ "$single_profile" = "$profile" ]; then
+    pass "$profile single profile env" "$single_profile"
+  else
+    warn "$profile single profile env" "expected=$profile actual=${single_profile:-missing}"
   fi
 done
 
@@ -329,6 +335,7 @@ for profile in "${PROFILES[@]}"; do
   printf '\n-- %s --\n' "$profile"
   value "container status" "$(container_status "$container")"
   value "HERMES_HOME" "$(container_env_value "$container" HERMES_HOME)"
+  value "HERMES_DASHBOARD_SINGLE_PROFILE" "$(container_env_value "$container" HERMES_DASHBOARD_SINGLE_PROFILE)"
   value "HERMES_DASHBOARD_PUBLIC_URL" "$(container_env_value "$container" HERMES_DASHBOARD_PUBLIC_URL)"
   value "mounts" ""
   container_mounts "$container" | sed 's#^#  #'
@@ -386,7 +393,7 @@ cat <<EOF
 #   1. Open a private/incognito window.
 #   2. Visit https://denis.${DOMAIN}
 #   3. Confirm Cloudflare Access login appears when no Access session exists.
-#   4. Confirm the profile switcher shows at most: default, denis.
+#   4. Confirm the profile switcher shows only: denis.
 #   5. Confirm "events feed disconnected" is gone.
 
 # If events feed still disconnects:
