@@ -294,6 +294,11 @@ Browser -> Cloudflare Access -> Cloudflare Tunnel -> 127.0.0.1:9120-9123
 This keeps the Hermes dashboard ports local-only on the server and exposes
 HTTPS hostnames through Cloudflare Access login.
 
+The generated tunnel config sets `originRequest.httpHostHeader: 127.0.0.1`
+for each dashboard. Keep that setting. Hermes dashboards are bound to
+loopback and reject public `Host` headers such as `denis.example.com` to
+protect against DNS rebinding.
+
 Run the read-only planner first:
 
 ```bash

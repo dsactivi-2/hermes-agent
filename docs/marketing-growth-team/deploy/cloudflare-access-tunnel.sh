@@ -173,6 +173,8 @@ write_config() {
     for profile in "${profiles[@]}"; do
       printf '  - hostname: %s\n' "$(hostname_for_profile "$profile")"
       printf '    service: http://127.0.0.1:%s\n' "$(dashboard_port "$profile")"
+      printf '    originRequest:\n'
+      printf '      httpHostHeader: 127.0.0.1\n'
     done
     printf '  - service: http_status:404\n'
   } > "$CONFIG_PATH"
