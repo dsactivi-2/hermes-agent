@@ -352,6 +352,9 @@ bash docs/marketing-growth-team/deploy/install-memory-system.sh
 bash docs/marketing-growth-team/deploy/add-deep-research-agent.sh
 bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh
 
+# Upgrade already deployed profile docs to latest routing rules:
+bash docs/marketing-growth-team/deploy/upgrade-profile-memory-routing.sh
+
 # Run strict audits:
 for p in arnela denis arman testing; do
   bash docs/marketing-growth-team/deploy/audit-agent-docs.sh --profile "$p" --report "/tmp/$p-agent-audit.md"

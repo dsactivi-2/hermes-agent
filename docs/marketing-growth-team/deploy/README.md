@@ -226,7 +226,26 @@ bash docs/marketing-growth-team/deploy/add-memory-review-reflector-agent.sh arne
 
 The script copies `agents/memory-review-reflector/` into each profile workspace, ensures the Reflektor memory and Skill Builder protocol exist, and updates the profile's orchestrator `SUBAGENTS.md`, `WORKFLOWS.md`, and `SKILLS.md` with idempotent marked blocks.
 
-## 8. Audit Agent Docs, Skills And Tools
+## 8. Upgrade Existing Profile Memory Routing
+
+Run this after pulling newer blueprint changes into an already deployed server:
+
+```bash
+bash docs/marketing-growth-team/deploy/upgrade-profile-memory-routing.sh
+```
+
+By default it updates `arnela`, `denis`, `arman`, and `testing`.
+
+The script is idempotent. It appends only missing upgrade blocks and copies only new required files:
+
+- post-task memory routing blocks in existing agent `MEMORY.md` files
+- `memory/agents/memory-review-reflector.md`
+- `memory/protocols/SKILL_BUILDER_WORKFLOW.md`
+- Memory Review / Reflektor agent files
+- Orchestrator links to the Reflektor workflow and Skill Builder candidates
+- Campaign Analyst `dashboard-brief` Skill candidate if missing
+
+## 9. Audit Agent Docs, Skills And Tools
 
 Run this on the server or in the repo to audit the blueprint:
 
@@ -252,7 +271,7 @@ The audit checks:
 
 Use the report as the input for the next optimization pass instead of letting an automation blindly rewrite prompts.
 
-## 9. Termius Port Forwarding Values
+## 10. Termius Port Forwarding Values
 
 In Termius create a Local Port Forwarding tunnel:
 
@@ -268,7 +287,7 @@ Then open:
 http://127.0.0.1:9120/?profile=arnela
 ```
 
-## 10. Local Alias Instead Of Typing The Tunnel Command
+## 11. Local Alias Instead Of Typing The Tunnel Command
 
 Run this on your local machine, not on the server:
 
