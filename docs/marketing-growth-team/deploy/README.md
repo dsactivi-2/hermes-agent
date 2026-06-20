@@ -272,7 +272,28 @@ The script is idempotent. It appends only missing upgrade blocks and copies only
 - Orchestrator links to the Reflektor workflow and Skill Builder candidates
 - Campaign Analyst `dashboard-brief` Skill candidate if missing
 
-## 9. Audit Agent Docs, Skills And Tools
+## 9. Bind Orchestrator Persona
+
+Run this after the profile workspaces exist and agent docs are installed:
+
+```bash
+bash docs/marketing-growth-team/deploy/bind-orchestrator-persona.sh
+```
+
+By default it updates `arnela`, `denis`, `arman`, and `testing`.
+
+This writes each profile's `SOUL.md` so the chat entrypoint behaves as the
+Marketing & Growth Orchestrator and knows its specialist roster. Without this
+binding, the profile may have all agent files on disk but still answer like a
+generic Hermes profile.
+
+Verify:
+
+```bash
+grep -n "marketing-growth-orchestrator-persona" ~/.hermes/profiles/denis/SOUL.md
+```
+
+## 10. Audit Agent Docs, Skills And Tools
 
 Run this on the server or in the repo to audit the blueprint:
 

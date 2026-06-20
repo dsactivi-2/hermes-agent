@@ -385,12 +385,18 @@ done
 section "Profile Env, Masked"
 for profile in "${PROFILES[@]}"; do
   env_file="${DATA_ROOT}/profiles/${profile}/.env"
+  soul_file="${DATA_ROOT}/profiles/${profile}/SOUL.md"
   printf '\n-- %s --\n' "$profile"
   value "env file" "$env_file"
   value "API_SERVER_ENABLED" "$(env_value "$env_file" API_SERVER_ENABLED)"
   value "API_SERVER_HOST" "$(env_value "$env_file" API_SERVER_HOST)"
   value "API_SERVER_PORT" "$(env_value "$env_file" API_SERVER_PORT)"
   value "API_SERVER_KEY" "$(mask_secret "$(env_value "$env_file" API_SERVER_KEY)")"
+  if [ -f "$soul_file" ] && grep -q 'marketing-growth-orchestrator-persona:managed' "$soul_file"; then
+    pass "$profile orchestrator persona" "SOUL.md bound"
+  else
+    warn "$profile orchestrator persona" "run bind-orchestrator-persona.sh $profile"
+  fi
 done
 
 section "Recommended Next Checks"
