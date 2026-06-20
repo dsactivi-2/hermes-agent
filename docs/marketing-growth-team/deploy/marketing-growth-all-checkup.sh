@@ -337,6 +337,7 @@ for profile in "${PROFILES[@]}"; do
   value "HERMES_HOME" "$(container_env_value "$container" HERMES_HOME)"
   value "HERMES_DASHBOARD_SINGLE_PROFILE" "$(container_env_value "$container" HERMES_DASHBOARD_SINGLE_PROFILE)"
   value "HERMES_DASHBOARD_PUBLIC_URL" "$(container_env_value "$container" HERMES_DASHBOARD_PUBLIC_URL)"
+  value "container API_SERVER_ENABLED" "$(container_env_value "$container" API_SERVER_ENABLED)"
   value "mounts" ""
   container_mounts "$container" | sed 's#^#  #'
 
@@ -356,6 +357,11 @@ for profile in "${PROFILES[@]}"; do
   else
     warn "$profile workspace mount" "missing /opt/data/profile-workspaces/${profile}"
   fi
+  if [ "$(container_env_value "$container" API_SERVER_ENABLED)" = "false" ]; then
+    pass "$profile dashboard api disabled" "API_SERVER_ENABLED=false"
+  else
+    warn "$profile dashboard api disabled" "container should set API_SERVER_ENABLED=false"
+  fi
 done
 
 section "Recent Dashboard Errors"
@@ -367,7 +373,7 @@ for profile in "${PROFILES[@]}"; do
     pass "$profile websocket origin" "no recent origin_mismatch/pty refused"
   fi
   if logs_contain_recent "$container" 'Port 864[0-9] already in use'; then
-    warn "$profile dashboard gateway" "dashboard container attempted API server; port already in use"
+    warn "$profile dashboard gateway" "old API port collision in recent logs; recreate container if it persists"
   else
     pass "$profile dashboard gateway" "no recent API port collision"
   fi

@@ -1692,6 +1692,14 @@ async def get_status(profile: Optional[str] = None):
                     for key, value in gateway_platforms.items()
                     if key in configured_gateway_platforms
                 }
+            if _single_profile_dashboard_name():
+                # Single-profile reverse-proxy dashboards use the browser UI
+                # and embedded chat only. The OpenAI-compatible api_server is
+                # owned by the main Hermes container on the public API port;
+                # the isolated dashboard container may report it as
+                # disconnected because that port is intentionally already in
+                # use. Hide that implementation detail from the dashboard UI.
+                gateway_platforms.pop("api_server", None)
             gateway_exit_reason = runtime.get("exit_reason")
             gateway_updated_at = runtime.get("updated_at")
             if not gateway_running:

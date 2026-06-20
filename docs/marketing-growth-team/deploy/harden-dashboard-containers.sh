@@ -188,6 +188,7 @@ recreate_dashboard() {
     -e "HERMES_HOME=/opt/data/profiles/${profile}" \
     -e "HERMES_DASHBOARD_SINGLE_PROFILE=${profile}" \
     -e "HERMES_DASHBOARD_PUBLIC_URL=https://${profile}.${BASE_DOMAIN}" \
+    -e "API_SERVER_ENABLED=false" \
     -e "HERMES_UID=${HERMES_UID:-10000}" \
     -e "HERMES_GID=${HERMES_GID:-10000}" \
     "$image" \

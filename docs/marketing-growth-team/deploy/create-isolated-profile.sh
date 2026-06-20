@@ -183,6 +183,7 @@ if [ "$START_DASHBOARD" -eq 1 ]; then
     -e "HERMES_HOME=/opt/data/profiles/$PROFILE" \
     -e "HERMES_DASHBOARD_SINGLE_PROFILE=$PROFILE" \
     -e "HERMES_DASHBOARD_PUBLIC_URL=https://${PROFILE}.${BASE_DOMAIN}" \
+    -e "API_SERVER_ENABLED=false" \
     -e "HERMES_UID=${HERMES_UID:-10000}" \
     -e "HERMES_GID=${HERMES_GID:-10000}" \
     "$IMAGE" \
