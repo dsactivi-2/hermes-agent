@@ -295,6 +295,12 @@ grep -n "marketing-growth-orchestrator-persona" ~/.hermes/profiles/denis/SOUL.md
 
 ## 10. Audit Agent Docs, Skills And Tools
 
+To verify the live deployed profile instances, not just the blueprint docs:
+
+```bash
+bash docs/marketing-growth-team/deploy/verify-marketing-growth-instances.sh
+```
+
 Run this on the server or in the repo to audit the blueprint:
 
 ```bash
