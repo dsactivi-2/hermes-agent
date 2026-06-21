@@ -82,6 +82,7 @@ fi
 
 command_exists() { command -v "$1" >/dev/null 2>&1; }
 section() { printf '\n== %s ==\n' "$1"; }
+runline() { printf 'RUN  %-38s %s\n' "$1" "$2"; }
 pass() { printf 'PASS %-38s %s\n' "$1" "$2"; }
 warn() { printf 'WARN %-38s %s\n' "$1" "$2"; }
 fail() { printf 'FAIL %-38s %s\n' "$1" "$2"; }
@@ -201,6 +202,7 @@ for profile in "${PROFILES[@]}"; do
     fi
 
     label="$profile $name routing"
+    runline "$label" "calling Hermes; timeout=${TIMEOUT_SECONDS}s"
     if [ "$runtime_runner" = "docker" ]; then
       output="$(timeout "$TIMEOUT_SECONDS" docker exec -i hermes hermes -p "$profile" chat -q "$prompt" 2>&1)"
       status=$?
