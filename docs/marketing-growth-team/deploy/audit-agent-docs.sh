@@ -225,6 +225,11 @@ for agent in "${expected_agents[@]}"; do
       && pass "$agent TOOLS.md has direct tools boundary" \
       || fail "$agent TOOLS.md missing direct tools boundary"
 
+    contains "$tools_file" '## Modellstrategie' \
+      && contains "$tools_file" 'Fallback' \
+      && pass "$agent TOOLS.md defines model/fallback contract" \
+      || fail "$agent TOOLS.md missing model/fallback contract"
+
     for mcp in ${expected_mcp[$agent]}; do
       contains "$tools_file" "$mcp" \
         && pass "$agent TOOLS.md includes expected MCP/tool: $mcp" \

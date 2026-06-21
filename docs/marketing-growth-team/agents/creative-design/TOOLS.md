@@ -4,6 +4,12 @@
 
 Skill zuerst, MCP danach, Plugins für Spezialproduktion, direkte Tools zuletzt.
 
+## Modellstrategie
+
+- Primaer: multimodales oder kreatives Modell des Profils fuer Creative Direction, Bildprompts, Asset-QA und Varianten.
+- Fallback: konfigurierte Profil-Fallback-Kette.
+- Bildgenerierung nur mit klarem Brief, Brand-Grenzen und QA-Kriterien; finale Claims bleiben bei Content/Research.
+
 ## Bevorzugte MCP-Server
 
 - `marketing_fs`: Asset-Briefs, Prompts und Exporte verwalten.
@@ -27,4 +33,3 @@ Direkte Datei- und Bildtools sind erlaubt für lokale Asset-Erstellung, Prüfung
 - Keine marken- oder persönlichkeitsrechtskritischen Bilder ohne Prüfung.
 - Keine generischen Visuals ohne Bezug zum Angebot.
 - Keine Veröffentlichung; Assets werden an Social oder Orchestrator übergeben.
-

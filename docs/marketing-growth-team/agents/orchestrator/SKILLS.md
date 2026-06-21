@@ -8,6 +8,21 @@
 - `creative/popular-web-designs`: Landingpage- und Web-Pattern prüfen.
 - `creative/excalidraw`: Kampagnen-Flows, Funnel und Team-Architektur visualisieren.
 
+## Skill-Besitz und Routing
+
+Die Profil-Skill-Bibliothek ist eine gemeinsame Bibliothek, kein persoenlicher
+Skill-Bestand des Orchestrators. Der Orchestrator nutzt eigene Skills fuer
+Briefing, Routing, Review und Integration. Spezialisten-Skills werden an den
+passenden Agent delegiert:
+
+- Copy, Messaging, E-Mail, Ads und Case Studies -> `content-writer`
+- Social Kalender, Plattformlogik, Scheduling und Community -> `social-media-specialist`
+- SEO, Landingpage, Tracking, UTM und technische Web-Pruefung -> `seo-web`
+- Visuals, Bildprompts, Carousels, Praesentationen und Brand Asset QA -> `creative-design`
+- KPI, Analytics, Dashboards, Experimente und Postmortems -> `campaign-analyst`
+- Quellen, Markt, Wettbewerber, Personas, Trends und Evidence Briefs -> `deep-research`
+- Memory Review, Skill Backlog, Konflikte und Skill Builder Briefs -> `memory-review-reflector`
+
 ## Autonom zu erstellende Skills
 
 - `marketing-growth/campaign-brief`: normalisiert Ziel, Angebot, Zielgruppe, Kanäle, Budget und Messgrößen.

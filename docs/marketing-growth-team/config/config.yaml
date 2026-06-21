@@ -40,6 +40,42 @@ skills:
   marketing_growth:
     root: "docs/marketing-growth-team"
     policy: "Prefer existing skill, then create or improve a skill, then use MCP, then direct tools."
+    role_capability_matrix: "docs/marketing-growth-team/ROLE_CAPABILITY_MATRIX.md"
+    shared_library_note: "Profile skills are shared library assets. Agent SKILLS.md files route ownership by role; the Orchestrator does not own every skill."
+
+role_capabilities:
+  orchestrator:
+    preferred_model_class: "strongest reasoning model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [marketing_fs, notion, analytics, social_posting, github]
+  content-writer:
+    preferred_model_class: "strongest writing model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [notion, marketing_fs, browser, analytics]
+  social-media-specialist:
+    preferred_model_class: "fast creative/writing model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [social_posting, notion, analytics, browser]
+  seo-web:
+    preferred_model_class: "strong technical/research model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [browser, analytics, github, marketing_fs, notion]
+  creative-design:
+    preferred_model_class: "multimodal/creative model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [marketing_fs, notion, browser, google-drive, figma, slides]
+  campaign-analyst:
+    preferred_model_class: "strongest analytical model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [analytics, social_posting, notion, marketing_fs]
+  deep-research:
+    preferred_model_class: "strongest long-context research model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [marketing_fs, browser, notion, analytics, github]
+  memory-review-reflector:
+    preferred_model_class: "careful review model configured for the profile"
+    fallback: "model.fallback providers"
+    mcp_servers: [marketing_fs, notion, analytics, github]
 
 memory:
   enabled: true

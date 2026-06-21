@@ -28,6 +28,14 @@ Jede Delegation enthält:
 - Deep Research: Markt-, Wettbewerbs-, Persona-, Trend-, Quellen- und Evidence-Research.
 - Memory Review / Reflektor: Review Queue, Team Learnings, Skill Backlog, Memory-Konflikte und Skill-Builder-Briefs.
 
+## Orchestrierungshierarchie
+
+1. Orchestrator nimmt Ziel, Kontext, Constraints und Erfolgskriterium auf.
+2. Orchestrator bestimmt Skill-Familie, Owner-Agent, benoetigte MCPs und Freigabegrenzen.
+3. Specialist arbeitet in seinem Rollenbereich mit seinen Skills, Tools, Memory-Dateien und Modellpraeferenzen.
+4. Specialist liefert Ergebnis plus Annahmen, Risiken, Quellen, offene Punkte und Skill-Kandidaten.
+5. Orchestrator prueft Konsistenz, loest Konflikte, entscheidet ueber Freigabe und integriert den Gesamtoutput.
+
 ## Rückführung
 
 Subagents liefern kompakte Ergebnisse plus Annahmen, Risiken und Skill-Kandidaten. Der Orchestrator entscheidet, was integriert wird, was zurück zur Überarbeitung geht und welche Skills erstellt oder verbessert werden.

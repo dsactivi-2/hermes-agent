@@ -3,9 +3,16 @@
 ## Entscheidungsregel
 
 1. Skill suchen oder erstellen.
-2. MCP-Server nutzen, wenn strukturierte Systeminteraktion gebraucht wird.
-3. Plugin nutzen, wenn Hermes bereits eine passende Extension bereitstellt.
-4. Klassische Tools nur für Restfälle oder lokale Datei-/Terminalarbeit nutzen.
+2. Skill-Owner bestimmen und bei Specialist-Aufgaben delegieren.
+3. MCP-Server nutzen, wenn strukturierte Systeminteraktion gebraucht wird.
+4. Plugin nutzen, wenn Hermes bereits eine passende Extension bereitstellt.
+5. Klassische Tools nur für Restfälle oder lokale Datei-/Terminalarbeit nutzen.
+
+## Modellstrategie
+
+- Primaer: staerkstes Reasoning-Modell des Profils fuer Planung, Routing, Freigabeentscheidungen und Konfliktaufloesung.
+- Fallback: konfigurierte Profil-Fallback-Kette aus `model.fallback`.
+- Kein eigenes Spezialistenmodell erfinden; bei Specialist-Arbeit den passenden Agent mit dessen Modellklasse beauftragen.
 
 ## Bevorzugte MCP-Server
 
@@ -32,4 +39,3 @@ Direkte Datei-, Terminal- oder Browser-Tools sind erlaubt, wenn kein Skill/MCP-P
 - Keine Ausgaben in Werbekonten ohne Freigabe.
 - Keine Kundendaten in nicht freigegebene Systeme kopieren.
 - Kein neuer Core-Tool-Vorschlag ohne Footprint-Prüfung.
-

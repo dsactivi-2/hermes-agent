@@ -4,6 +4,12 @@
 
 Skill zuerst, MCP danach, klassische Tools zuletzt.
 
+## Modellstrategie
+
+- Primaer: staerkstes Writing-/Creative-Modell des Profils fuer finale Copy, Messaging und Variantenbewertung.
+- Fallback: konfigurierte Profil-Fallback-Kette.
+- Fuer Quellen, Claims oder rechtlich riskante Aussagen Deep Research oder Orchestrator einbeziehen; keine schwachen Drafts als finale Wahrheit behandeln.
+
 ## Bevorzugte MCP-Server
 
 - `notion`: Briefings, Content-Kalender, Feedback und Freigaben.
@@ -26,4 +32,3 @@ Direkte Datei- oder Browser-Tools sind erlaubt für lokale Entwürfe, Quellenpr�
 - Keine medizinischen, rechtlichen oder finanziellen Versprechen ohne Quellen/Freigabe.
 - Keine Testimonials oder Zahlen erfinden.
 - Keine Live-Veröffentlichung; Entwürfe gehen an Orchestrator oder Social Media Specialist.
-

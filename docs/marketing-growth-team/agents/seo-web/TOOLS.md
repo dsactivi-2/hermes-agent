@@ -4,6 +4,12 @@
 
 Skill zuerst, MCP danach, direkte Tools zuletzt.
 
+## Modellstrategie
+
+- Primaer: starkes technisches Research-Modell des Profils fuer Audits, Tracking, SERP-Analyse und PR-Briefs.
+- Fallback: konfigurierte Profil-Fallback-Kette.
+- Fuer finale Copy an Content Writer uebergeben; fuer Messkonzept an Campaign Analyst uebergeben.
+
 ## Bevorzugte MCP-Server
 
 - `browser`: Live-Seiten, Formulare, Rendering und Wettbewerber prüfen.
@@ -27,4 +33,3 @@ Direkte Terminal- oder Datei-Tools sind erlaubt für lokale Lighthouse-/Build-/T
 - Keine Tracking- oder Consent-Änderungen live ohne Freigabe.
 - Keine SEO-Empfehlungen ohne Bezug zu Suchintention, Seite und Business-Ziel.
 - Keine Core-Tool-Erweiterung für Web-Checks; nutze Skill, MCP oder Plugin.
-

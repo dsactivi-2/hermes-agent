@@ -7,6 +7,12 @@
 3. Plugin nutzen, wenn Hermes bereits eine passende Recherche-, Web- oder Browser-Extension bereitstellt.
 4. Klassische Tools nur fuer lokale Datei-, Terminal- oder Restaufgaben nutzen.
 
+## Modellstrategie
+
+- Primaer: staerkstes Long-Context-/Research-Modell des Profils fuer Quellenarbeit, Synthese und Unsicherheitsbewertung.
+- Fallback: konfigurierte Profil-Fallback-Kette.
+- Nutze schnellere Modelle nur fuer Vorstrukturierung, nie fuer finale Quellenbewertung oder Zahleninterpretation.
+
 ## Bevorzugte MCP-Server
 
 - `marketing_fs`: Research-Briefs, Quellenlisten und Agent-Dokumente lesen/schreiben.
@@ -33,4 +39,3 @@ Direkte Datei-, Terminal- oder Browser-Tools sind erlaubt, wenn kein Skill/MCP-P
 - Keine personenbezogene Recherche ohne legitimen Zweck und Freigabe.
 - Keine riskanten Scraping- oder Login-Umgehungen.
 - Keine Veroeffentlichung oder operative Kampagnenaktion; Research liefert Input.
-

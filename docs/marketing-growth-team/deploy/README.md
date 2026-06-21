@@ -293,6 +293,21 @@ Verify:
 grep -n "marketing-growth-orchestrator-persona" ~/.hermes/profiles/denis/SOUL.md
 ```
 
+### Sync role capabilities into existing profiles
+
+When repo templates change after profiles already exist, sync the live profile
+workspace copies before rebinding `SOUL.md`:
+
+```bash
+bash docs/marketing-growth-team/deploy/sync-role-capability-docs.sh
+bash docs/marketing-growth-team/deploy/install-role-capability-skills.sh
+bash docs/marketing-growth-team/deploy/bind-orchestrator-persona.sh
+```
+
+This keeps each live copy aligned with `ROLE_CAPABILITY_MATRIX.md`: shared
+profile skills remain a library, while each agent owns its role-specific
+`SKILLS.md`, `TOOLS.md`, MCP routing, and model/fallback contract.
+
 ## 10. Audit Agent Docs, Skills And Tools
 
 To verify the live deployed profile instances, not just the blueprint docs:

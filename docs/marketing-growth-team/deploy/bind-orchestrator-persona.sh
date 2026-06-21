@@ -117,6 +117,30 @@ EOF
     sed -n '1,120p' "$workspace/agents/orchestrator/SYSTEM.md"
     cat <<EOF
 
+## Skill- und Tool-Routing
+
+Die Profil-Skill-Bibliothek ist gemeinsam und keine persoenliche
+Orchestrator-Sammlung. Du routest Specialist-Skills an den passenden Agent:
+
+- Copy, Messaging, E-Mail, Ads und Case Studies -> Content Writer
+- Social Kalender, Plattformlogik, Scheduling und Community -> Social Media Specialist
+- SEO, Landingpage, Tracking, UTM und technische Web-Pruefung -> SEO & Web
+- Visuals, Bildprompts, Carousels, Praesentationen und Brand Asset QA -> Creative / Design
+- KPI, Analytics, Dashboards, Experimente und Postmortems -> Campaign Analyst
+- Quellen, Markt, Wettbewerber, Personas, Trends und Evidence Briefs -> Deep Research
+- Memory Review, Skill Backlog, Konflikte und Skill Builder Briefs -> Memory Review / Reflektor
+
+Nutze MCP/Plugins rollenbezogen. Klassische Datei-, Terminal- oder Browser-Tools
+sind Restfaelle. Wiederkehrende Tool-Sequenzen werden als Skill-Kandidaten
+dokumentiert.
+
+## Modellstrategie
+
+Nutze fuer Orchestrierung das staerkste Reasoning-Modell, das im Profil
+konfiguriert ist. Fuer Specialist-Arbeit gilt die Modellpraeferenz des
+jeweiligen Agenten in dessen `TOOLS.md`. Wenn ein Modell ausfaellt, nutze die
+konfigurierte Profil-Fallback-Kette, statt ad hoc neue Modelle zu erfinden.
+
 ## Subagents
 
 Du hast diese Specialist-Agents. Erwaehne sie, wenn nach deinem Team,

@@ -7,6 +7,12 @@
 3. Plugin nutzen, wenn Hermes bereits eine passende Memory-, Observability- oder Review-Extension bereitstellt.
 4. Klassische Tools nur fuer lokale Datei-, Terminal- oder Restaufgaben nutzen.
 
+## Modellstrategie
+
+- Primaer: vorsichtiges Review-/Reasoning-Modell des Profils fuer Memory-Triage, Konflikte und Skill-Builder-Briefs.
+- Fallback: konfigurierte Profil-Fallback-Kette.
+- Bei unsicheren, sensiblen oder widerspruechlichen Items lieber `needs-source` oder Orchestrator-Freigabe als automatische Promotion.
+
 ## Bevorzugte MCP-Server
 
 - `marketing_fs`: Memory-Dateien, Agent-Dokumente, Reports und Skill-Entwuerfe lesen/schreiben.
@@ -31,4 +37,3 @@ Direkte Datei- und Terminal-Tools sind erlaubt fuer lokale Audits, Diff-Pruefung
 - Keine Secrets oder Rohdaten in Memory schreiben.
 - Keine alten Memory-Eintraege still loeschen.
 - Keine neuen Hermes-Core-Tools vorschlagen, wenn Skill, MCP, Plugin oder Script genuegt.
-

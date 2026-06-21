@@ -92,6 +92,43 @@ required_memory_files=(
   memory/protocols/SKILL_BUILDER_WORKFLOW.md
 )
 
+declare -A expected_skill_terms
+expected_skill_terms[orchestrator]="Skill-Besitz delegation-router campaign-brief skill-gap-review"
+expected_skill_terms[content-writer]="brand-voice-writer linkedin-post-series landing-page-copy email-nurture-sequence"
+expected_skill_terms[social-media-specialist]="linkedin-calendar social-repurposing social-scheduling-checklist"
+expected_skill_terms[seo-web]="landing-page-audit utm-taxonomy search-intent-brief prelaunch-tracking-check"
+expected_skill_terms[creative-design]="visual-campaign-brief flux-image-prompt linkedin-carousel-production brand-asset-qa"
+expected_skill_terms[campaign-analyst]="kpi-tree utm-validator weekly-campaign-report experiment-design"
+expected_skill_terms[deep-research]="deep-research-brief source-quality-rubric competitor-intel evidence-brief"
+expected_skill_terms[memory-review-reflector]="memory-review-triage memory-conflict-resolution skill-builder-brief memory-quality-audit"
+
+declare -A expected_mcp_terms
+expected_mcp_terms[orchestrator]="marketing_fs notion analytics social_posting github"
+expected_mcp_terms[content-writer]="notion marketing_fs browser analytics"
+expected_mcp_terms[social-media-specialist]="social_posting notion analytics browser"
+expected_mcp_terms[seo-web]="browser analytics github marketing_fs notion"
+expected_mcp_terms[creative-design]="marketing_fs notion browser"
+expected_mcp_terms[campaign-analyst]="analytics social_posting notion marketing_fs"
+expected_mcp_terms[deep-research]="marketing_fs browser notion analytics github"
+expected_mcp_terms[memory-review-reflector]="marketing_fs notion analytics github"
+
+role_model_file_has_contract() {
+  local file="$1"
+  [ -f "$file" ] \
+    && grep -q '## Modellstrategie' "$file" \
+    && grep -q 'Fallback' "$file"
+}
+
+file_contains_all_terms() {
+  local file="$1"
+  shift
+  local term
+  [ -f "$file" ] || return 1
+  for term in "$@"; do
+    grep -qi -- "$term" "$file" || return 1
+  done
+}
+
 section() { printf '\n== %s ==\n' "$1"; }
 value() { printf '%-38s %s\n' "$1:" "$2"; }
 pass() { printf 'PASS %-36s %s\n' "$1" "$2"; }
@@ -301,6 +338,26 @@ for profile in "${PROFILES[@]}"; do
     fi
   done
 
+  for agent in "${required_agents[@]}"; do
+    skills_file="$workspace/agents/$agent/SKILLS.md"
+    tools_file="$workspace/agents/$agent/TOOLS.md"
+    if file_contains_all_terms "$skills_file" ${expected_skill_terms[$agent]}; then
+      pass "$profile $agent skill routing" "role-specific"
+    else
+      fail "$profile $agent skill routing" "missing expected role skill terms"
+    fi
+    if file_contains_all_terms "$tools_file" ${expected_mcp_terms[$agent]}; then
+      pass "$profile $agent MCP routing" "role-specific"
+    else
+      fail "$profile $agent MCP routing" "missing expected MCP terms"
+    fi
+    if role_model_file_has_contract "$tools_file"; then
+      pass "$profile $agent model contract" "profile model + fallback"
+    else
+      fail "$profile $agent model contract" "missing Modellstrategie/Fallback"
+    fi
+  done
+
   memory_count="$(count_memory_files "$workspace")"
   if [ "$memory_count" -eq "${#required_memory_files[@]}" ]; then
     pass "$profile memory complete" "$memory_count/${#required_memory_files[@]}"
@@ -368,6 +425,9 @@ section "Recommended Fix Commands"
 cat <<EOF
 # Bind all profiles to their orchestrator persona:
 bash docs/marketing-growth-team/deploy/bind-orchestrator-persona.sh
+
+# Install role-relevant built-in/optional skills into profile skill libraries:
+bash docs/marketing-growth-team/deploy/install-role-capability-skills.sh
 
 # Recreate hardened dashboard containers after image/env changes:
 bash docs/marketing-growth-team/deploy/harden-dashboard-containers.sh --apply --domain ${DOMAIN}
