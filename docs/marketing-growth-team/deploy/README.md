@@ -316,6 +316,18 @@ To verify the live deployed profile instances, not just the blueprint docs:
 bash docs/marketing-growth-team/deploy/verify-marketing-growth-instances.sh
 ```
 
+To verify runtime behavior with real chat calls, run the optional routing test:
+
+```bash
+bash docs/marketing-growth-team/deploy/verify-runtime-role-routing.sh denis
+bash docs/marketing-growth-team/deploy/verify-runtime-role-routing.sh --output-dir /tmp/marketing-runtime-routing
+```
+
+This asks the Orchestrator concrete SEO, Copy, Social, Creative, Analytics,
+Research, and Memory tasks and checks whether the answer routes to the expected
+Specialist and skill family. It uses the configured model and may consume model
+credits.
+
 Run this on the server or in the repo to audit the blueprint:
 
 ```bash
