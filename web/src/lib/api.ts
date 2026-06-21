@@ -1581,6 +1581,9 @@ export interface StatusResponse {
   /** False when the dashboard is running in a hosted/managed layout where
    * updates are handled by the outer launcher instead of ``hermes update``. */
   can_update_hermes?: boolean;
+  /** False when this dashboard is an isolated profile surface and should not
+   * expose gateway lifecycle controls. */
+  gateway_lifecycle_enabled?: boolean;
   config_path: string;
   config_version: number;
   env_path: string;

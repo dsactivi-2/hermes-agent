@@ -1757,6 +1757,7 @@ async def get_status(profile: Optional[str] = None):
             "config_version": current_ver,
             "latest_config_version": latest_ver,
             "can_update_hermes": not _dashboard_local_update_managed_externally(),
+            "gateway_lifecycle_enabled": not _gateway_lifecycle_disabled_for_dashboard(),
             "gateway_running": gateway_running,
             "gateway_state": gateway_state,
             "gateway_platforms": gateway_platforms,
@@ -2225,6 +2226,30 @@ def _gateway_display_command(profile: Optional[str], verb: str) -> str:
     return " ".join(["hermes", *_gateway_subcommand(profile, verb)])
 
 
+def _gateway_lifecycle_disabled_for_dashboard() -> bool:
+    """Return true when this dashboard should not manage gateway services.
+
+    Single-profile reverse-proxy dashboards are intentionally scoped to one
+    profile and typically run with ``API_SERVER_ENABLED=false`` as embedded
+    dashboard/chat surfaces. They do not own the machine-level API gateway
+    service, so lifecycle buttons would either fail or target the wrong
+    supervisor slot.
+    """
+    return bool(_single_profile_dashboard_name())
+
+
+def _ensure_gateway_lifecycle_allowed() -> None:
+    if _gateway_lifecycle_disabled_for_dashboard():
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "Gateway lifecycle controls are disabled in isolated "
+                "single-profile dashboards. Manage the gateway from the main "
+                "Hermes container or server shell."
+            ),
+        )
+
+
 def _spawn_gateway_restart(profile: Optional[str] = None) -> Tuple[subprocess.Popen, bool]:
     """Spawn ``hermes gateway restart``, reusing an in-flight restart.
 
@@ -2236,6 +2261,7 @@ def _spawn_gateway_restart(profile: Optional[str] = None) -> Tuple[subprocess.Po
 
     Returns ``(proc, reused)``.
     """
+    _ensure_gateway_lifecycle_allowed()
     subcommand = _gateway_subcommand(profile, "restart")
     existing = _ACTION_PROCS.get("gateway-restart")
     if existing is not None and existing.poll() is None:
@@ -7887,6 +7913,7 @@ async def set_webhook_enabled(name: str, body: WebhookEnabledToggle):
 @app.post("/api/gateway/start")
 async def start_gateway(profile: Optional[str] = None):
     try:
+        _ensure_gateway_lifecycle_allowed()
         proc = _spawn_hermes_action(_gateway_subcommand(profile, "start"), "gateway-start")
     except HTTPException:
         raise
@@ -7899,6 +7926,7 @@ async def start_gateway(profile: Optional[str] = None):
 @app.post("/api/gateway/stop")
 async def stop_gateway(profile: Optional[str] = None):
     try:
+        _ensure_gateway_lifecycle_allowed()
         proc = _spawn_hermes_action(_gateway_subcommand(profile, "stop"), "gateway-stop")
     except HTTPException:
         raise
@@ -8432,6 +8460,14 @@ def _profile_cli_args(profile: Optional[str]) -> List[str]:
     ``skills_hub.SKILLS_DIR``. Empty/"current" means the dashboard's own
     profile (no args, legacy behavior).
     """
+    if _single_profile_dashboard_name():
+        # Isolated dashboard containers already run with HERMES_HOME pointing
+        # directly at that profile, e.g. /opt/data/profiles/denis. Passing
+        # "-p denis" from there would make the child process look for
+        # /opt/data/profiles/denis/profiles/denis and fail with
+        # "no such gateway 'denis'". In single-profile mode, the dashboard's
+        # own HERMES_HOME is the target profile.
+        return []
     requested = (profile or "").strip()
     if not requested or requested.lower() in {"current", "default"}:
         return []

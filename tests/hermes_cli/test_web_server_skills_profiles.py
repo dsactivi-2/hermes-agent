@@ -211,3 +211,34 @@ class TestProfileScopedHubActions:
             json={"identifier": "official/demo", "profile": "ghost"},
         )
         assert resp.status_code == 404
+
+    def test_profile_cli_args_uses_current_home_in_single_profile_dashboard(
+        self, isolated_profiles, monkeypatch
+    ):
+        """Single-profile dashboard containers already point HERMES_HOME at
+        the mounted profile. They must not spawn child commands with
+        ``-p <profile>`` or Hermes will look below ``profiles/<profile>/`` a
+        second time."""
+        import hermes_cli.web_server as web_server
+
+        monkeypatch.setenv("HERMES_DASHBOARD_SINGLE_PROFILE", "worker_alpha")
+
+        assert web_server._profile_cli_args("worker_alpha") == []
+        assert web_server._profile_cli_args("current") == []
+
+    def test_gateway_restart_disabled_in_single_profile_dashboard(
+        self, client, isolated_profiles, monkeypatch
+    ):
+        import hermes_cli.web_server as web_server
+
+        monkeypatch.setenv("HERMES_DASHBOARD_SINGLE_PROFILE", "worker_alpha")
+        monkeypatch.setattr(
+            web_server,
+            "_spawn_hermes_action",
+            lambda *_args, **_kwargs: pytest.fail("should not spawn gateway action"),
+        )
+
+        resp = client.post("/api/gateway/restart", params={"profile": "worker_alpha"})
+
+        assert resp.status_code == 409
+        assert "disabled in isolated single-profile dashboards" in resp.json()["detail"]
