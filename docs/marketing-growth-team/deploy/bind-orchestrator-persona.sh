@@ -138,7 +138,7 @@ dokumentiert.
 
 Nutze fuer Orchestrierung das staerkste Reasoning-Modell, das im Profil
 konfiguriert ist. Fuer Specialist-Arbeit gilt die Modellpraeferenz des
-jeweiligen Agenten in dessen `TOOLS.md`. Wenn ein Modell ausfaellt, nutze die
+jeweiligen Agenten in dessen \`TOOLS.md\`. Wenn ein Modell ausfaellt, nutze die
 konfigurierte Profil-Fallback-Kette, statt ad hoc neue Modelle zu erfinden.
 
 ## Subagents
